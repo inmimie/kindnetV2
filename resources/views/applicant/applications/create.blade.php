@@ -45,6 +45,20 @@
                             
                             <input type="hidden" name="charity_type_id" value="{{ request('charity_type_id') }}">
 
+                            @php
+                                $defaultAddress = '';
+                                if (auth()->user()->address_line1) {
+                                    $lines = array_filter([
+                                        auth()->user()->address_line1,
+                                        auth()->user()->address_line2,
+                                        auth()->user()->address_line3,
+                                        auth()->user()->postcode . ' ' . auth()->user()->city,
+                                        auth()->user()->state_nation
+                                    ]);
+                                    $defaultAddress = implode(", ", $lines);
+                                }
+                            @endphp
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Applicant Name *</label>
@@ -52,14 +66,14 @@
                                 </div>
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">IC Number *</label>
-                                    <input type="text" id="applicant_ic_input" name="applicant_ic" value="{{ old('applicant_ic', $latestApplication?->applicant_ic) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" placeholder="e.g. 900101-14-5555" maxlength="14" required>
+                                    <input type="text" id="applicant_ic_input" name="applicant_ic" value="{{ old('applicant_ic', $latestApplication?->applicant_ic ?? auth()->user()->ic_number) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" placeholder="e.g. 900101-14-5555" maxlength="14" required>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Date of Birth *</label>
-                                    <input type="date" id="applicant_dob_input" name="applicant_dob" value="{{ old('applicant_dob', $latestApplication?->applicant_dob ? \Carbon\Carbon::parse($latestApplication->applicant_dob)->format('Y-m-d') : '') }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                    <input type="date" id="applicant_dob_input" name="applicant_dob" value="{{ old('applicant_dob', $latestApplication?->applicant_dob ? \Carbon\Carbon::parse($latestApplication->applicant_dob)->format('Y-m-d') : (auth()->user()->date_of_birth ? \Carbon\Carbon::parse(auth()->user()->date_of_birth)->format('Y-m-d') : '')) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                 </div>
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Gender *</label>
@@ -73,16 +87,18 @@
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Marital Status *</label>
                                     <select name="applicant_marital_status" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                         <option value="">Select</option>
-                                        <option value="Bujang" {{ old('applicant_marital_status', $latestApplication?->applicant_marital_status) == 'Bujang' ? 'selected' : '' }}>Single</option>
-                                        <option value="Berkahwin" {{ old('applicant_marital_status', $latestApplication?->applicant_marital_status) == 'Berkahwin' ? 'selected' : '' }}>Married</option>
-                                        <option value="Lain-lain" {{ old('applicant_marital_status', $latestApplication?->applicant_marital_status) == 'Lain-lain' ? 'selected' : '' }}>Other</option>
+                                        <option value="Bujang" {{ old('applicant_marital_status', $latestApplication?->applicant_marital_status ?? auth()->user()->marital_status) == 'Bujang' ? 'selected' : '' }}>Single</option>
+                                        <option value="Berkahwin" {{ old('applicant_marital_status', $latestApplication?->applicant_marital_status ?? auth()->user()->marital_status) == 'Berkahwin' ? 'selected' : '' }}>Married</option>
+                                        <option value="Duda/Janda" {{ old('applicant_marital_status', $latestApplication?->applicant_marital_status ?? auth()->user()->marital_status) == 'Duda/Janda' ? 'selected' : '' }}>Divorced</option>
+                                        <option value="Balu" {{ old('applicant_marital_status', $latestApplication?->applicant_marital_status ?? auth()->user()->marital_status) == 'Balu' ? 'selected' : '' }}>Widowed</option>
+                                        <option value="Lain-lain" {{ old('applicant_marital_status', $latestApplication?->applicant_marital_status ?? auth()->user()->marital_status) == 'Lain-lain' ? 'selected' : '' }}>Other</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="mb-4">
                                 <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Full Address *</label>
-                                <textarea name="applicant_address" rows="3" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>{{ old('applicant_address', $latestApplication?->applicant_address) }}</textarea>
+                                <textarea name="applicant_address" rows="3" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>{{ old('applicant_address', $latestApplication?->applicant_address ?? $defaultAddress) }}</textarea>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">

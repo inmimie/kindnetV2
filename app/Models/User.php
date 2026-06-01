@@ -23,6 +23,22 @@ class User extends Authenticatable
         'password',
         'role',
         'phone_number',
+        'ic_type',
+        'ic_number',
+        'date_of_birth',
+        'place_of_birth',
+        'marital_status',
+        'race',
+        'religion',
+        'citizen',
+        'address_line1',
+        'address_line2',
+        'address_line3',
+        'city',
+        'postcode',
+        'district',
+        'state_nation',
+        'phone_home',
     ];
 
     /**
@@ -45,6 +61,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_of_birth' => 'date',
         ];
     }
 
