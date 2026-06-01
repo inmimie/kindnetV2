@@ -29,6 +29,6 @@ test('new users can register', function () {
         'gender' => 'Lelaki',
     ]);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $this->assertGuest();
+    $response->assertRedirect(route('login'));
 });
