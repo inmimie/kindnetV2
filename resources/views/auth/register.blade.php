@@ -124,20 +124,20 @@
                             <!-- Date of Birth -->
                             <div>
                                 <label for="dob_display" class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">Date of Birth *</label>
-                                <input id="dob_display" type="text" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium" placeholder="Auto from IC">
+                                <input id="dob_display" type="text" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium">
                                 <input id="date_of_birth" type="hidden" name="date_of_birth" value="{{ old('date_of_birth') }}">
                             </div>
 
                             <!-- Country / State of Birth -->
                             <div>
                                 <label for="place_of_birth" class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">State of Birth *</label>
-                                <input id="place_of_birth" type="text" name="place_of_birth" value="{{ old('place_of_birth') }}" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium" placeholder="Auto from IC">
+                                <input id="place_of_birth" type="text" name="place_of_birth" value="{{ old('place_of_birth') }}" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium">
                             </div>
 
                             <!-- Gender -->
                             <div>
                                 <label for="gender" class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">Gender *</label>
-                                <input id="gender" type="text" name="gender" value="{{ old('gender') }}" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium" placeholder="Auto from IC">
+                                <input id="gender" type="text" name="gender" value="{{ old('gender') }}" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium">
                             </div>
                         </div>
 
