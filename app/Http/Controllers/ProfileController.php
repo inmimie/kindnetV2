@@ -57,4 +57,47 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    /**
+     * Update the user's profile picture.
+     */
+    public function updateAvatar(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'profile_picture' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+        ]);
+
+        $user = $request->user();
+
+        if ($request->hasFile('profile_picture')) {
+            // Delete old avatar if exists
+            if ($user->profile_picture) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            // Store new avatar in 'profile_pictures' directory on 'public' disk
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            
+            $user->profile_picture = $path;
+            $user->save();
+        }
+
+        return Redirect::route('profile.edit')->with('status', 'profile-picture-updated');
+    }
+
+    /**
+     * Delete the user's profile picture.
+     */
+    public function destroyAvatar(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if ($user->profile_picture) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_picture);
+            $user->profile_picture = null;
+            $user->save();
+        }
+
+        return Redirect::route('profile.edit')->with('status', 'profile-picture-deleted');
+    }
 }

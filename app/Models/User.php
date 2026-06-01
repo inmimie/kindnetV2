@@ -40,6 +40,7 @@ class User extends Authenticatable
         'state_nation',
         'phone_home',
         'gender',
+        'profile_picture',
     ];
 
     /**
