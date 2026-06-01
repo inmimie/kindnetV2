@@ -51,6 +51,7 @@ class RegisteredUserController extends Controller
             'state_nation' => ['required', 'string'],
             'phone_number' => ['required', 'string', 'regex:/^\+60[0-9]+$/'],
             'phone_home' => ['nullable', 'string', 'regex:/^\+60[0-9]+$/'],
+            'gender' => ['required', 'string', 'in:Lelaki,Perempuan'],
         ]);
 
         $user = User::create([
@@ -74,6 +75,7 @@ class RegisteredUserController extends Controller
             'state_nation' => $request->state_nation,
             'phone_number' => $request->phone_number,
             'phone_home' => $request->phone_home,
+            'gender' => $request->gender,
         ]);
 
         event(new Registered($user));

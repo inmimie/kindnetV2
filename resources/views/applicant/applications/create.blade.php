@@ -79,8 +79,8 @@
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Gender *</label>
                                     <select name="applicant_gender" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                         <option value="">Select</option>
-                                        <option value="Lelaki" {{ old('applicant_gender', $latestApplication?->applicant_gender) == 'Lelaki' ? 'selected' : '' }}>Male</option>
-                                        <option value="Perempuan" {{ old('applicant_gender', $latestApplication?->applicant_gender) == 'Perempuan' ? 'selected' : '' }}>Female</option>
+                                        <option value="Lelaki" {{ old('applicant_gender', $latestApplication?->applicant_gender ?? auth()->user()->gender) == 'Lelaki' ? 'selected' : '' }}>Male</option>
+                                        <option value="Perempuan" {{ old('applicant_gender', $latestApplication?->applicant_gender ?? auth()->user()->gender) == 'Perempuan' ? 'selected' : '' }}>Female</option>
                                     </select>
                                 </div>
                                 <div>

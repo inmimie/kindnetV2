@@ -39,6 +39,7 @@ class User extends Authenticatable
         'district',
         'state_nation',
         'phone_home',
+        'gender',
     ];
 
     /**

@@ -120,36 +120,24 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <!-- Date of Birth -->
                             <div>
                                 <label for="dob_display" class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">Date of Birth *</label>
-                                <input id="dob_display" type="text" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium" placeholder="Auto-calculated from IC">
+                                <input id="dob_display" type="text" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium" placeholder="Auto from IC">
                                 <input id="date_of_birth" type="hidden" name="date_of_birth" value="{{ old('date_of_birth') }}">
                             </div>
 
-                            <!-- Country of Birth -->
+                            <!-- Country / State of Birth -->
                             <div>
-                                <label for="place_of_birth" class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">Country / State of Birth *</label>
-                                <select id="place_of_birth" name="place_of_birth" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:border-indigo-500 focus:ring-indigo-500 transition-colors shadow-sm dark:text-white">
-                                    <option value="">Select State/Country</option>
-                                    <option value="Selangor" {{ old('place_of_birth') == 'Selangor' ? 'selected' : '' }}>Selangor</option>
-                                    <option value="Kuala Lumpur" {{ old('place_of_birth') == 'Kuala Lumpur' ? 'selected' : '' }}>Kuala Lumpur</option>
-                                    <option value="Johor" {{ old('place_of_birth') == 'Johor' ? 'selected' : '' }}>Johor</option>
-                                    <option value="Kedah" {{ old('place_of_birth') == 'Kedah' ? 'selected' : '' }}>Kedah</option>
-                                    <option value="Kelantan" {{ old('place_of_birth') == 'Kelantan' ? 'selected' : '' }}>Kelantan</option>
-                                    <option value="Melaka" {{ old('place_of_birth') == 'Melaka' ? 'selected' : '' }}>Melaka</option>
-                                    <option value="Negeri Sembilan" {{ old('place_of_birth') == 'Negeri Sembilan' ? 'selected' : '' }}>Negeri Sembilan</option>
-                                    <option value="Pahang" {{ old('place_of_birth') == 'Pahang' ? 'selected' : '' }}>Pahang</option>
-                                    <option value="Pulau Pinang" {{ old('place_of_birth') == 'Pulau Pinang' ? 'selected' : '' }}>Pulau Pinang</option>
-                                    <option value="Perak" {{ old('place_of_birth') == 'Perak' ? 'selected' : '' }}>Perak</option>
-                                    <option value="Perlis" {{ old('place_of_birth') == 'Perlis' ? 'selected' : '' }}>Perlis</option>
-                                    <option value="Sabah" {{ old('place_of_birth') == 'Sabah' ? 'selected' : '' }}>Sabah</option>
-                                    <option value="Sarawak" {{ old('place_of_birth') == 'Sarawak' ? 'selected' : '' }}>Sarawak</option>
-                                    <option value="Terengganu" {{ old('place_of_birth') == 'Terengganu' ? 'selected' : '' }}>Terengganu</option>
-                                    <option value="Labuan" {{ old('place_of_birth') == 'Labuan' ? 'selected' : '' }}>Labuan</option>
-                                    <option value="Putrajaya" {{ old('place_of_birth') == 'Putrajaya' ? 'selected' : '' }}>Putrajaya</option>
-                                </select>
+                                <label for="place_of_birth" class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">State of Birth *</label>
+                                <input id="place_of_birth" type="text" name="place_of_birth" value="{{ old('place_of_birth') }}" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium" placeholder="Auto from IC">
+                            </div>
+
+                            <!-- Gender -->
+                            <div>
+                                <label for="gender" class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">Gender *</label>
+                                <input id="gender" type="text" name="gender" value="{{ old('gender') }}" readonly class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-100 dark:bg-gray-800/80 shadow-sm dark:text-slate-400 cursor-not-allowed font-medium" placeholder="Auto from IC">
                             </div>
                         </div>
 
@@ -373,6 +361,7 @@
                                     <div><span class="font-semibold text-slate-400">IC Type:</span> <span id="rev-ic-type">-</span></div>
                                     <div><span class="font-semibold text-slate-400">IC No:</span> <span id="rev-ic-number">-</span></div>
                                     <div><span class="font-semibold text-slate-400">DOB:</span> <span id="rev-dob">-</span></div>
+                                    <div><span class="font-semibold text-slate-400">Gender:</span> <span id="rev-gender">-</span></div>
                                     <div><span class="font-semibold text-slate-400">Place of Birth:</span> <span id="rev-pob">-</span></div>
                                     <div><span class="font-semibold text-slate-400">Race/Religion:</span> <span id="rev-race-rel">-</span></div>
                                 </div>
@@ -444,7 +433,8 @@
             const inputIcNumber = document.getElementById('ic_number');
             const inputDobDisplay = document.getElementById('dob_display');
             const inputDateOfBirth = document.getElementById('date_of_birth');
-            const selectPob = document.getElementById('place_of_birth');
+            const inputPob = document.getElementById('place_of_birth');
+            const inputGender = document.getElementById('gender');
             const selectMarital = document.getElementById('marital_status');
             const selectRace = document.getElementById('race');
             const selectReligion = document.getElementById('religion');
@@ -571,7 +561,7 @@
                 '16': 'Putrajaya'
             };
 
-            // Auto DOB generation from Malaysian IC
+            // Auto DOB and Gender generation from Malaysian IC
             inputIcNumber.addEventListener('input', function(e) {
                 let ic = e.target.value.replace(/[^0-9]/g, '');
                 
@@ -612,12 +602,24 @@
                 if (ic.length >= 8) {
                     let pb = ic.substring(6, 8);
                     if (birthPlaceCodes[pb]) {
-                        selectPob.value = birthPlaceCodes[pb];
+                        inputPob.value = birthPlaceCodes[pb];
                     } else {
-                        selectPob.value = '';
+                        inputPob.value = '';
                     }
                 } else {
-                    selectPob.value = '';
+                    inputPob.value = '';
+                }
+
+                // Auto Gender extraction from Malaysian IC last number
+                if (ic.length === 12) {
+                    let lastDigit = parseInt(ic.substring(11));
+                    if (lastDigit % 2 === 0) {
+                        inputGender.value = 'Perempuan'; // Female
+                    } else {
+                        inputGender.value = 'Lelaki'; // Male
+                    }
+                } else {
+                    inputGender.value = '';
                 }
             });
 
@@ -689,7 +691,8 @@
                             return;
                         }
                         if (!inputDateOfBirth.value) { alert("Invalid IC Number Date."); inputIcNumber.focus(); return; }
-                        if (!selectPob.value) { selectPob.focus(); return; }
+                        if (!inputPob.value) { alert("Invalid IC Number Place of Birth."); inputIcNumber.focus(); return; }
+                        if (!inputGender.value) { alert("Invalid IC Number Gender."); inputIcNumber.focus(); return; }
                         if (!selectMarital.value) { selectMarital.focus(); return; }
                         if (!selectRace.value) { selectRace.focus(); return; }
                         if (!selectReligion.value) { selectReligion.focus(); return; }
@@ -734,7 +737,8 @@
                         document.getElementById('rev-ic-type').textContent = selectIcType.value;
                         document.getElementById('rev-ic-number').textContent = inputIcNumber.value;
                         document.getElementById('rev-dob').textContent = inputDobDisplay.value;
-                        document.getElementById('rev-pob').textContent = selectPob.value;
+                        document.getElementById('rev-gender').textContent = inputGender.value;
+                        document.getElementById('rev-pob').textContent = inputPob.value;
                         document.getElementById('rev-race-rel').textContent = `${selectRace.value} / ${selectReligion.value}`;
                         
                         let fullAddress = inputAddress1.value;

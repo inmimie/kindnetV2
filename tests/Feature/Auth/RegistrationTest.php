@@ -26,6 +26,7 @@ test('new users can register', function () {
         'district' => 'Petaling',
         'state_nation' => 'Selangor',
         'phone_number' => '+60123456789',
+        'gender' => 'Lelaki',
     ]);
 
     $this->assertAuthenticated();
