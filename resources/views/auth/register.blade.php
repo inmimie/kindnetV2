@@ -551,6 +551,26 @@
                 }
             }
 
+            // Birth Place Code dictionary based on Malaysian IC middle numbers
+            const birthPlaceCodes = {
+                '01': 'Johor', '21': 'Johor', '22': 'Johor', '23': 'Johor', '24': 'Johor',
+                '02': 'Kedah', '25': 'Kedah', '26': 'Kedah', '27': 'Kedah',
+                '03': 'Kelantan', '28': 'Kelantan', '29': 'Kelantan',
+                '04': 'Melaka', '30': 'Melaka',
+                '05': 'Negeri Sembilan', '31': 'Negeri Sembilan', '59': 'Negeri Sembilan',
+                '06': 'Pahang', '32': 'Pahang', '33': 'Pahang',
+                '07': 'Pulau Pinang', '34': 'Pulau Pinang', '35': 'Pulau Pinang',
+                '08': 'Perak', '36': 'Perak', '37': 'Perak', '38': 'Perak', '39': 'Perak',
+                '09': 'Perlis', '40': 'Perlis',
+                '10': 'Selangor', '41': 'Selangor', '42': 'Selangor', '43': 'Selangor', '44': 'Selangor',
+                '11': 'Terengganu', '45': 'Terengganu', '46': 'Terengganu',
+                '12': 'Sabah', '47': 'Sabah', '48': 'Sabah', '49': 'Sabah',
+                '13': 'Sarawak', '50': 'Sarawak', '51': 'Sarawak', '52': 'Sarawak', '53': 'Sarawak',
+                '14': 'Kuala Lumpur', '54': 'Kuala Lumpur', '55': 'Kuala Lumpur', '56': 'Kuala Lumpur', '57': 'Kuala Lumpur',
+                '15': 'Labuan', '58': 'Labuan',
+                '16': 'Putrajaya'
+            };
+
             // Auto DOB generation from Malaysian IC
             inputIcNumber.addEventListener('input', function(e) {
                 let ic = e.target.value.replace(/[^0-9]/g, '');
@@ -586,6 +606,18 @@
                 } else {
                     inputDobDisplay.value = '';
                     inputDateOfBirth.value = '';
+                }
+
+                // Auto Place of Birth generation from Malaysian IC middle number
+                if (ic.length >= 8) {
+                    let pb = ic.substring(6, 8);
+                    if (birthPlaceCodes[pb]) {
+                        selectPob.value = birthPlaceCodes[pb];
+                    } else {
+                        selectPob.value = '';
+                    }
+                } else {
+                    selectPob.value = '';
                 }
             });
 
