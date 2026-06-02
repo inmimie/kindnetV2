@@ -31,7 +31,14 @@
                             @endif
                             
                             <div class="p-6">
-                                <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-1">{{ $type->name }}</h4>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-xl font-bold text-gray-900 dark:text-white">{{ $type->name }}</h4>
+                                    @if ($type->status === 'open')
+                                        <span class="px-2 py-0.5 text-2xs font-bold rounded bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 uppercase tracking-wider">Open</span>
+                                    @else
+                                        <span class="px-2 py-0.5 text-2xs font-bold rounded bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300 uppercase tracking-wider">Closed</span>
+                                    @endif
+                                </div>
                                 
                                 @if ($type->start_date || $type->end_date)
                                     <p class="text-xs text-indigo-600 dark:text-indigo-400 font-bold flex items-center mb-4">
@@ -51,10 +58,16 @@
                         </div>
                         
                         <div class="p-6 pt-0">
-                            <a href="{{ route('applicant.applications.create', ['charity_type_id' => $type->id]) }}" class="inline-flex w-full justify-center items-center px-4 py-2 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-lg font-semibold hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 dark:hover:text-white transition-colors">
-                                Apply Now
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </a>
+                            @if ($type->status === 'open')
+                                <a href="{{ route('applicant.applications.create', ['charity_type_id' => $type->id]) }}" class="inline-flex w-full justify-center items-center px-4 py-2 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-lg font-semibold hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 dark:hover:text-white transition-colors">
+                                    Apply Now
+                                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </a>
+                            @else
+                                <button disabled class="inline-flex w-full justify-center items-center px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 rounded-lg font-semibold cursor-not-allowed">
+                                    Closed
+                                </button>
+                            @endif
                         </div>
                     </div>
                 @empty

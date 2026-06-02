@@ -16,7 +16,14 @@
                             </div>
                         @endif
                         <div class="flex-1">
-                            <h3 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-indigo-500 mb-4">{{ $charityType->name }}</h3>
+                            <div class="flex flex-wrap items-center gap-4 mb-4">
+                                <h3 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-indigo-500">{{ $charityType->name }}</h3>
+                                @if ($charityType->status === 'open')
+                                    <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300">Open</span>
+                                @else
+                                    <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300">Closed</span>
+                                @endif
+                            </div>
                             
                             @if ($charityType->start_date || $charityType->end_date)
                                 <div class="mb-4 inline-flex items-center px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-sm font-semibold">

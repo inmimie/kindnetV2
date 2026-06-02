@@ -13,6 +13,14 @@ class CharityType extends Model
         'end_date' => 'date',
     ];
 
+    public function getStatusAttribute(): string
+    {
+        if ($this->end_date && now()->startOfDay()->gt($this->end_date->startOfDay())) {
+            return 'closed';
+        }
+        return 'open';
+    }
+
     public function applications()
     {
         return $this->hasMany(Application::class);

@@ -15,8 +15,15 @@ class ApplicationController extends Controller
         return view('applicant.applications.index', compact('applications'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->has('charity_type_id')) {
+            $charityType = CharityType::find($request->charity_type_id);
+            if ($charityType && $charityType->status === 'closed') {
+                return redirect()->route('applicant.dashboard')->with('error', 'This financial aid category is currently closed.');
+            }
+        }
+
         $charityTypes = CharityType::all();
         $latestApplication = auth()->user()->applications()->latest()->first();
         return view('applicant.applications.create', compact('charityTypes', 'latestApplication'));
@@ -24,6 +31,11 @@ class ApplicationController extends Controller
 
     public function store(Request $request)
     {
+        $charityType = CharityType::find($request->charity_type_id);
+        if ($charityType && $charityType->status === 'closed') {
+            return redirect()->route('applicant.dashboard')->with('error', 'This financial aid category is currently closed.');
+        }
+
         $validated = $this->validateApplication($request);
         
         $validated['total_income'] = $validated['father_income'] + $validated['mother_income'];

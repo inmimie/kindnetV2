@@ -31,7 +31,14 @@
                                 @endif
                                 <div class="p-6 flex-1 flex flex-col justify-between">
                                     <div>
-                                        <h3 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-indigo-500 mb-2">{{ $type->name }}</h3>
+                                        <div class="flex justify-between items-center mb-2">
+                                            <h3 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-indigo-500">{{ $type->name }}</h3>
+                                            @if ($type->status === 'open')
+                                                <span class="px-2 py-0.5 text-xs font-bold rounded-full bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300">Open</span>
+                                            @else
+                                                <span class="px-2 py-0.5 text-xs font-bold rounded-full bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300">Closed</span>
+                                            @endif
+                                        </div>
                                         
                                         @if ($type->start_date || $type->end_date)
                                             <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 font-semibold flex items-center">
