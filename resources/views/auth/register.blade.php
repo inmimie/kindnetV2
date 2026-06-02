@@ -737,7 +737,7 @@
                         document.getElementById('rev-ic-type').textContent = selectIcType.value;
                         document.getElementById('rev-ic-number').textContent = inputIcNumber.value;
                         document.getElementById('rev-dob').textContent = inputDobDisplay.value;
-                        document.getElementById('rev-gender').textContent = inputGender.value;
+                        document.getElementById('rev-gender').textContent = inputGender.value === 'Perempuan' ? 'Female' : (inputGender.value === 'Lelaki' ? 'Male' : inputGender.value);
                         document.getElementById('rev-pob').textContent = inputPob.value;
                         document.getElementById('rev-race-rel').textContent = `${selectRace.value} / ${selectReligion.value}`;
                         

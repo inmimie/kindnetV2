@@ -77,7 +77,9 @@
 
                             <div>
                                 <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Gender</span>
-                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ $user->gender ?? 'N/A' }}</span>
+                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">
+                                    {{ $user->gender === 'Perempuan' ? 'Female' : ($user->gender === 'Lelaki' ? 'Male' : ($user->gender ?? 'N/A')) }}
+                                </span>
                             </div>
 
                             <div>

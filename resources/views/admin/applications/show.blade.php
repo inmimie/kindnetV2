@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <span class="block text-xs uppercase text-gray-500">Gender</span>
-                            <span class="font-medium text-sm">{{ $application->applicant_gender }}</span>
+                            <span class="font-medium text-sm">{{ $application->applicant_gender === 'Perempuan' ? 'Female' : ($application->applicant_gender === 'Lelaki' ? 'Male' : $application->applicant_gender) }}</span>
                         </div>
                         <div>
                             <span class="block text-xs uppercase text-gray-500">Marital Status</span>
