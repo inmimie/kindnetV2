@@ -38,7 +38,8 @@
                                             <span class="px-2 py-1 rounded text-xs {{ $user->role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">{{ strtoupper($user->role) }}</span>
                                         </td>
                                         <td class="py-4 px-6 text-gray-500">{{ $user->created_at->format('Y-m-d') }}</td>
-                                        <td class="py-4 px-6 text-right space-x-2">
+                                        <td class="py-4 px-6 text-right space-x-4">
+                                            <a href="{{ route('admin.accounts.edit', $user) }}" class="text-sm text-indigo-600 hover:text-indigo-900">Edit</a>
                                             <form action="{{ route('admin.accounts.destroy', $user) }}" method="POST" class="inline" onsubmit="return confirm('Delete this account?')">
                                                 @csrf
                                                 @method('DELETE')

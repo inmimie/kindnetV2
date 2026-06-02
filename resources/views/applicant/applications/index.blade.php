@@ -7,9 +7,6 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="mb-6 flex justify-end">
-                <a href="{{ route('applicant.applications.create') }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded shadow">Create New Application</a>
-            </div>
 
             @if(session('success'))
                 <div class="mb-4 px-4 py-3 bg-green-100 border border-green-400 text-green-700 rounded">
@@ -57,10 +54,10 @@
                                                 <a href="{{ route('applicant.applications.show', $app) }}" class="text-indigo-600 hover:text-indigo-400 font-medium transition">View</a>
                                                 @if($app->status === 'pending')
                                                     <a href="{{ route('applicant.applications.edit', $app) }}" class="text-blue-600 hover:text-blue-400 font-medium transition">Edit</a>
-                                                    <form action="{{ route('applicant.applications.destroy', $app) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?')">
+                                                    <form action="{{ route('applicant.applications.destroy', $app) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to cancel this application?')">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="text-red-600 hover:text-red-400 font-medium transition">Delete</button>
+                                                        <button type="submit" class="text-red-600 hover:text-red-400 font-medium transition">Cancel</button>
                                                     </form>
                                                 @endif
                                             </td>
