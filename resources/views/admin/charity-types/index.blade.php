@@ -49,10 +49,10 @@
                                         <p class="text-gray-600 dark:text-gray-300 mb-6 text-sm line-clamp-3">{{ $type->description }}</p>
                                     </div>
                                     
-                                    <div class="flex space-x-4 border-t pt-4 dark:border-gray-600">
+                                    <div class="flex items-center space-x-4 border-t pt-4 dark:border-gray-600">
                                         <a href="{{ route('admin.charity-types.show', $type) }}" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium">View</a>
                                         <a href="{{ route('admin.charity-types.edit', $type) }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 font-medium">Edit</a>
-                                        <form action="{{ route('admin.charity-types.destroy', $type) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this Charity Type?')">
+                                        <form action="{{ route('admin.charity-types.destroy', $type) }}" method="POST" class="inline-flex items-center" onsubmit="return confirm('Are you sure you want to delete this Charity Type?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-sm text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 font-medium">Delete</button>
