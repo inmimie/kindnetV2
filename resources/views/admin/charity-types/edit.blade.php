@@ -23,32 +23,57 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="mb-4">
-                            <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Picture</label>
+                        <div class="mb-6">
+                            <label class="block font-medium text-sm text-gray-700 dark:text-gray-300 mb-2">Picture</label>
                             
-                            <div class="mt-2 mb-3">
-                                <!-- Live Preview -->
-                                <div x-show="imagePreview" x-cloak>
-                                    <img :src="imagePreview" class="h-40 w-auto rounded border border-gray-300 dark:border-gray-600 shadow-sm object-cover">
-                                    <p class="text-xs text-gray-500 mt-1">New Image Preview</p>
+                            <div class="relative">
+                                <!-- Interactive Banner Upload Box -->
+                                <div @click="$refs.imageInput.click()" 
+                                     class="w-full h-48 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 flex flex-col items-center justify-center cursor-pointer overflow-hidden group relative">
+                                    
+                                    <!-- Case 1: Image dynamic preview OR Existing Image -->
+                                    <div x-show="imagePreview || @json($charityType->image ? true : false)" class="w-full h-full">
+                                        <!-- Live Preview -->
+                                        <template x-if="imagePreview">
+                                            <img :src="imagePreview" class="w-full h-full object-cover">
+                                        </template>
+                                        <!-- Database Image -->
+                                        <template x-if="!imagePreview && @json($charityType->image ? true : false)">
+                                            @if($charityType->image)
+                                                <img src="{{ asset('storage/' . $charityType->image) }}" class="w-full h-full object-cover">
+                                            @endif
+                                        </template>
+                                        
+                                        <!-- Hover Overlay -->
+                                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <span class="text-white font-semibold text-sm flex items-center">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                                Change Picture
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Case 2: No image exists -->
+                                    <div x-show="!imagePreview && !@json($charityType->image ? true : false)" class="text-center p-6 flex flex-col items-center">
+                                        <div class="w-12 h-12 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-semibold text-gray-600 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">add picture</span>
+                                        <span class="text-xs text-gray-400 mt-1">Supports JPG, PNG, WEBP (Max 2MB)</span>
+                                    </div>
                                 </div>
-                                <!-- Existing Image -->
-                                <div x-show="!imagePreview && @json($charityType->image ? true : false)">
-                                    @if ($charityType->image)
-                                        <img src="{{ asset('storage/' . $charityType->image) }}" class="h-24 w-auto rounded border border-gray-300 dark:border-gray-600 shadow-sm object-cover">
-                                        <p class="text-xs text-gray-500 mt-1">Current Image</p>
-                                    @endif
-                                </div>
+
+                                <!-- Hidden File Input -->
+                                <input type="file" name="image" accept="image/*" x-ref="imageInput" class="hidden"
+                                       @change="
+                                           const file = $event.target.files[0];
+                                           if (file) {
+                                               imagePreview = URL.createObjectURL(file);
+                                           }
+                                       ">
                             </div>
-                            
-                            <input type="file" name="image" accept="image/*"
-                                   @change="
-                                       const file = $event.target.files[0];
-                                       if (file) {
-                                           imagePreview = URL.createObjectURL(file);
-                                       }
-                                   "
-                                   class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 dark:file:bg-gray-700 file:text-indigo-700 dark:file:text-gray-300 hover:file:bg-indigo-100 dark:hover:file:bg-gray-600 cursor-pointer">
                         </div>
 
                         <div class="mb-4">
