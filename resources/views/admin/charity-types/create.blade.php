@@ -19,8 +19,25 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('admin.charity-types.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.charity-types.store') }}" method="POST" enctype="multipart/form-data" x-data="{ imagePreview: null }">
                         @csrf
+                        
+                        <div class="mb-4">
+                            <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Picture</label>
+                            <div class="mt-2 mb-3" x-show="imagePreview" x-cloak>
+                                <img :src="imagePreview" class="h-40 w-auto rounded border border-gray-300 dark:border-gray-600 shadow-sm object-cover">
+                                <p class="text-xs text-gray-500 mt-1">Image Preview</p>
+                            </div>
+                            <input type="file" name="image" accept="image/*" 
+                                   @change="
+                                       const file = $event.target.files[0];
+                                       if (file) {
+                                           imagePreview = URL.createObjectURL(file);
+                                       }
+                                   "
+                                   class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 dark:file:bg-gray-700 file:text-indigo-700 dark:file:text-gray-300 hover:file:bg-indigo-100 dark:hover:file:bg-gray-600 cursor-pointer">
+                        </div>
+
                         <div class="mb-4">
                             <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Name</label>
                             <input type="text" name="name" value="{{ old('name') }}" class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100" required>
@@ -29,11 +46,6 @@
                         <div class="mb-4">
                             <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Description</label>
                             <textarea name="description" rows="3" class="mt-1 block w-full rounded-md shadow-sm border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">{{ old('description') }}</textarea>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Picture</label>
-                            <input type="file" name="image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 dark:file:bg-gray-700 file:text-indigo-700 dark:file:text-gray-300 hover:file:bg-indigo-100 dark:hover:file:bg-gray-600 cursor-pointer">
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
