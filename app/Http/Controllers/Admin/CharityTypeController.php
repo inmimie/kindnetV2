@@ -21,8 +21,19 @@ class CharityTypeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:255', 'description' => 'nullable|string']);
-        CharityType::create($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('charity_types', 'public');
+        }
+
+        CharityType::create($validated);
         return redirect()->route('admin.charity-types.index')->with('success', 'Charity Type created successfully.');
     }
 
@@ -38,8 +49,22 @@ class CharityTypeController extends Controller
 
     public function update(Request $request, CharityType $charityType)
     {
-        $request->validate(['name' => 'required|string|max:255', 'description' => 'nullable|string']);
-        $charityType->update($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($charityType->image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($charityType->image);
+            }
+            $validated['image'] = $request->file('image')->store('charity_types', 'public');
+        }
+
+        $charityType->update($validated);
         return redirect()->route('admin.charity-types.index')->with('success', 'Charity Type updated successfully.');
     }
 

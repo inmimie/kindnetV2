@@ -20,12 +20,37 @@
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                 @forelse($charityTypes as $type)
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative group">
-                        <div class="h-2 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                        <div class="p-6">
-                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ $type->name }}</h4>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 line-clamp-3">{{ $type->description ?? 'Financial aid application via KINDNET.' }}</p>
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative group flex flex-col justify-between">
+                        <div>
+                            @if ($type->image)
+                                <img src="{{ asset('storage/' . $type->image) }}" class="w-full h-48 object-cover">
+                            @else
+                                <div class="w-full h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
+                                    {{ $type->name }}
+                                </div>
+                            @endif
                             
+                            <div class="p-6">
+                                <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-1">{{ $type->name }}</h4>
+                                
+                                @if ($type->start_date || $type->end_date)
+                                    <p class="text-xs text-indigo-600 dark:text-indigo-400 font-bold flex items-center mb-4">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                        @if ($type->start_date && $type->end_date)
+                                            Window: {{ $type->start_date->format('M d') }} - {{ $type->end_date->format('M d, Y') }}
+                                        @elseif ($type->start_date)
+                                            Starts: {{ $type->start_date->format('M d, Y') }}
+                                        @else
+                                            Deadline: {{ $type->end_date->format('M d, Y') }}
+                                        @endif
+                                    </p>
+                                @endif
+                                
+                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-2 line-clamp-3">{{ $type->description ?? 'Financial aid application via KINDNET.' }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 pt-0">
                             <a href="{{ route('applicant.applications.create', ['charity_type_id' => $type->id]) }}" class="inline-flex w-full justify-center items-center px-4 py-2 bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-lg font-semibold hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 dark:hover:text-white transition-colors">
                                 Apply Now
                                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
