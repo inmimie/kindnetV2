@@ -16,11 +16,11 @@
                         <p class="text-gray-500 text-sm mt-1">Submitted on {{ $application->created_at->format('M d, Y h:i A') }}</p>
                     </div>
                     <div>
-                        <span class="px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider
+                        <span class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider
                             {{ $application->status === 'approved' ? 'bg-green-100 text-green-800' : '' }}
                             {{ $application->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}
                             {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}">
-                            {{ $application->status }}
+                            {{ $application->status === 'pending' ? 'In Progress' : $application->status }}
                         </span>
                     </div>
                 </div>

@@ -11,6 +11,13 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script>
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
 
         <style>
             body { font-family: 'Inter', sans-serif; }
@@ -42,6 +49,9 @@
         </style>
     </head>
     <body class="antialiased bg-slate-50 dark:bg-gray-900 text-slate-800 dark:text-gray-200 relative min-h-screen flex items-center justify-center selection:bg-indigo-500 selection:text-white py-12">
+        <div class="fixed top-6 right-6 z-50">
+            <x-theme-toggle />
+        </div>
 
         <!-- Background Effect -->
         <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
@@ -147,10 +157,10 @@
                                 <label for="marital_status" class="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">Marital Status *</label>
                                 <select id="marital_status" name="marital_status" required class="w-full px-3 py-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:border-indigo-500 focus:ring-indigo-500 transition-colors shadow-sm dark:text-white text-sm">
                                     <option value="">Select</option>
-                                    <option value="Bujang" {{ old('marital_status') == 'Bujang' ? 'selected' : '' }}>Bujang</option>
-                                    <option value="Berkahwin" {{ old('marital_status') == 'Berkahwin' ? 'selected' : '' }}>Berkahwin</option>
-                                    <option value="Duda/Janda" {{ old('marital_status') == 'Duda/Janda' ? 'selected' : '' }}>Duda/Janda</option>
-                                    <option value="Balu" {{ old('marital_status') == 'Balu' ? 'selected' : '' }}>Balu</option>
+                                    <option value="Single" {{ old('marital_status') == 'Single' ? 'selected' : '' }}>Single</option>
+                                    <option value="Married" {{ old('marital_status') == 'Married' ? 'selected' : '' }}>Married</option>
+                                    <option value="Divorced" {{ old('marital_status') == 'Divorced' ? 'selected' : '' }}>Divorced</option>
+                                    <option value="Widowed" {{ old('marital_status') == 'Widowed' ? 'selected' : '' }}>Widowed</option>
                                 </select>
                             </div>
 

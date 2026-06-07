@@ -67,6 +67,20 @@ class User extends Authenticatable
         ];
     }
 
+    protected function maritalStatus(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn ($value) => match ($value) {
+                'Bujang' => 'Single',
+                'Berkahwin' => 'Married',
+                'Duda/Janda' => 'Divorced',
+                'Balu' => 'Widowed',
+                'Lain-lain' => 'Other',
+                default => $value,
+            }
+        );
+    }
+
     public function applications()
     {
         return $this->hasMany(Application::class);

@@ -59,61 +59,63 @@
                             </div>
 
                             <div>
-                                <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Age</span>
-                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">
-                                    {{ $user->date_of_birth ? $user->date_of_birth->age . ' years' : 'N/A' }}
-                                </span>
-                            </div>
-
-                            <div>
                                 <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Email Address</span>
                                 <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ $user->email }}</span>
                             </div>
 
-                            <div>
-                                <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">IC Number</span>
-                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ $user->ic_number ?? 'N/A' }}</span>
-                            </div>
+                            @if($user->role !== 'admin')
+                                <div>
+                                    <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Age</span>
+                                    <span class="text-base font-semibold text-gray-800 dark:text-gray-200">
+                                        {{ $user->date_of_birth ? $user->date_of_birth->age . ' years' : 'N/A' }}
+                                    </span>
+                                </div>
 
-                            <div>
-                                <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Gender</span>
-                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">
-                                    {{ $user->gender === 'Perempuan' ? 'Female' : ($user->gender === 'Lelaki' ? 'Male' : ($user->gender ?? 'N/A')) }}
-                                </span>
-                            </div>
+                                <div>
+                                    <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">IC Number</span>
+                                    <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ $user->ic_number ?? 'N/A' }}</span>
+                                </div>
 
-                            <div>
-                                <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Mobile Phone</span>
-                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ $user->phone_number ?? 'N/A' }}</span>
-                            </div>
+                                <div>
+                                    <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Gender</span>
+                                    <span class="text-base font-semibold text-gray-800 dark:text-gray-200">
+                                        {{ $user->gender === 'Perempuan' ? 'Female' : ($user->gender === 'Lelaki' ? 'Male' : ($user->gender ?? 'N/A')) }}
+                                    </span>
+                                </div>
 
-                            <div>
-                                <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Home Phone</span>
-                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ $user->phone_home ?? 'N/A' }}</span>
-                            </div>
+                                <div>
+                                    <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Mobile Phone</span>
+                                    <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ $user->phone_number ?? 'N/A' }}</span>
+                                </div>
 
-                            <div>
-                                <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Role</span>
-                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ ucfirst($user->role) }}</span>
-                            </div>
+                                <div>
+                                    <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Home Phone</span>
+                                    <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ $user->phone_home ?? 'N/A' }}</span>
+                                </div>
 
-                            <div class="sm:col-span-2">
-                                <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Full Address</span>
-                                <span class="text-base font-semibold text-gray-800 dark:text-gray-200">
-                                    @php
-                                        $addressParts = array_filter([
-                                            $user->address_line1,
-                                            $user->address_line2,
-                                            $user->address_line3,
-                                            $user->postcode,
-                                            $user->city,
-                                            $user->district,
-                                            $user->state_nation
-                                        ]);
-                                    @endphp
-                                    {{ !empty($addressParts) ? implode(', ', $addressParts) : 'N/A' }}
-                                </span>
-                            </div>
+                                <div>
+                                    <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Role</span>
+                                    <span class="text-base font-semibold text-gray-800 dark:text-gray-200">{{ ucfirst($user->role) }}</span>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <span class="block font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider text-xs">Full Address</span>
+                                    <span class="text-base font-semibold text-gray-800 dark:text-gray-200">
+                                        @php
+                                            $addressParts = array_filter([
+                                                $user->address_line1,
+                                                $user->address_line2,
+                                                $user->address_line3,
+                                                $user->postcode,
+                                                $user->city,
+                                                $user->district,
+                                                $user->state_nation
+                                            ]);
+                                        @endphp
+                                        {{ !empty($addressParts) ? implode(', ', $addressParts) : 'N/A' }}
+                                    </span>
+                                </div>
+                            @endif
                         </div>
 
                         <!-- Action Buttons -->

@@ -17,6 +17,20 @@ class Application extends Model
         'account_number', 'bank_name',
         'doc_student_ic', 'doc_student_birth_cert', 'doc_mother_ic', 'doc_father_ic', 'doc_offer_letter'
     ];
+    protected function applicantMaritalStatus(): \Illuminate\Database\Eloquent\Casts\Attribute
+    {
+        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+            get: fn ($value) => match ($value) {
+                'Bujang' => 'Single',
+                'Berkahwin' => 'Married',
+                'Duda/Janda' => 'Divorced',
+                'Balu' => 'Widowed',
+                'Lain-lain' => 'Other',
+                default => $value,
+            }
+        );
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

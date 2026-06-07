@@ -11,6 +11,13 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script>
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
 
         <style>
             body { font-family: 'Inter', sans-serif; }
@@ -41,6 +48,9 @@
         </style>
     </head>
     <body class="antialiased bg-slate-50 dark:bg-gray-900 text-slate-800 dark:text-gray-200 relative min-h-screen flex items-center justify-center selection:bg-indigo-500 selection:text-white">
+        <div class="fixed top-6 right-6 z-50">
+            <x-theme-toggle />
+        </div>
 
         <!-- Background Effect -->
         <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">

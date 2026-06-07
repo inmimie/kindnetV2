@@ -100,11 +100,11 @@
                                             <td class="py-4 px-6 text-sm text-gray-500">{{ $app->created_at->format('M d, Y') }}</td>
                                             <td class="py-4 px-6">
                                                 @if($app->status === 'approved')
-                                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">Approved</span>
+                                                    <span class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">Approved</span>
                                                 @elseif($app->status === 'rejected')
-                                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">Rejected</span>
+                                                    <span class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">Rejected</span>
                                                 @else
-                                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">Pending</span>
+                                                    <span class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">In Progress</span>
                                                 @endif
                                             </td>
                                             <td class="py-4 px-6 text-right">

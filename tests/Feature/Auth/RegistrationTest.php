@@ -16,7 +16,7 @@ test('new users can register', function () {
         'ic_number' => '981212-01-5555',
         'date_of_birth' => '1998-12-12',
         'place_of_birth' => 'Selangor',
-        'marital_status' => 'Bujang',
+        'marital_status' => 'Single',
         'race' => 'Melayu',
         'religion' => 'Islam',
         'citizen' => 'Warganegara',

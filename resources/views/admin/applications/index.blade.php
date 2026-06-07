@@ -23,7 +23,6 @@
                                 <tr class="border-b dark:border-gray-700 text-gray-700 dark:text-gray-300">
                                     <th class="py-4 px-6 font-semibold">Applicant</th>
                                     <th class="py-4 px-6 font-semibold">Type</th>
-                                    <th class="py-4 px-6 font-semibold">Title</th>
                                     <th class="py-4 px-6 font-semibold">Status</th>
                                     <th class="py-4 px-6 font-semibold">Date</th>
                                     <th class="py-4 px-6 font-semibold text-right">Action</th>
@@ -37,13 +36,12 @@
                                             <div class="text-sm text-gray-500">{{ $app->user->email }}</div>
                                         </td>
                                         <td class="py-4 px-6">{{ $app->charityType->name }}</td>
-                                        <td class="py-4 px-6 truncate max-w-xs">{{ $app->title }}</td>
                                         <td class="py-4 px-6">
-                                            <span class="px-3 py-1 rounded-full text-xs font-bold 
+                                            <span class="whitespace-nowrap px-3 py-1 rounded-full text-xs font-bold 
                                                 {{ $app->status === 'approved' ? 'bg-green-100 text-green-800' : '' }}
                                                 {{ $app->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}
                                                 {{ $app->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}">
-                                                {{ ucfirst($app->status) }}
+                                                {{ $app->status === 'pending' ? 'In Progress' : ucfirst($app->status) }}
                                             </span>
                                         </td>
                                         <td class="py-4 px-6 text-gray-500">{{ $app->created_at->format('M d, Y') }}</td>

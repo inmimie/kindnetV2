@@ -11,6 +11,13 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script>
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
 
         <style>
             body { font-family: 'Inter', sans-serif; }
@@ -76,6 +83,7 @@
                     </div>
 
                     <div class="flex items-center gap-4">
+                        <x-theme-toggle />
                         @auth
                             <a href="{{ url('/dashboard') }}" class="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 transition">Go to Dashboard &rarr;</a>
                         @else

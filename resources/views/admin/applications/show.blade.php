@@ -226,11 +226,11 @@
                     <h3 class="text-lg font-bold mb-4">Review Action</h3>
                     
                     <div class="mb-6 flex justify-center">
-                        <span class="px-4 py-2 rounded-full text-sm font-bold w-full text-center tracking-widest uppercase
+                        <span class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold w-full text-center tracking-widest uppercase
                             {{ $application->status === 'approved' ? 'bg-green-100 text-green-800' : '' }}
                             {{ $application->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}
                             {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}">
-                            {{ $application->status }}
+                            {{ $application->status === 'pending' ? 'In Progress' : $application->status }}
                         </span>
                     </div>
 
@@ -247,7 +247,7 @@
                         <div class="mb-4">
                             <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Change Status</label>
                             <select name="status" class="block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-sm">
-                                <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>In Progress</option>
                                 <option value="approved" {{ $application->status == 'approved' ? 'selected' : '' }}>Approved</option>
                                 <option value="rejected" {{ $application->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
                             </select>

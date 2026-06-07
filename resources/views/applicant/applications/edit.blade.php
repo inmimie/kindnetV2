@@ -74,9 +74,11 @@
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Marital Status *</label>
                                     <select name="applicant_marital_status" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                         <option value="">Select</option>
-                                        <option value="Bujang" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Bujang' ? 'selected' : '' }}>Single</option>
-                                        <option value="Berkahwin" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Berkahwin' ? 'selected' : '' }}>Married</option>
-                                        <option value="Lain-lain" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Lain-lain' ? 'selected' : '' }}>Other</option>
+                                        <option value="Single" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Single' ? 'selected' : '' }}>Single</option>
+                                        <option value="Married" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Married' ? 'selected' : '' }}>Married</option>
+                                        <option value="Divorced" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Divorced' ? 'selected' : '' }}>Divorced</option>
+                                        <option value="Widowed" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Widowed' ? 'selected' : '' }}>Widowed</option>
+                                        <option value="Other" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Other' ? 'selected' : '' }}>Other</option>
                                     </select>
                                 </div>
                             </div>
