@@ -49,30 +49,31 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Applicant Name *</label>
-                                    <input type="text" name="applicant_name" value="{{ old('applicant_name', $application->applicant_name) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                    <input type="text" name="applicant_name" value="{{ old('applicant_name', $application->applicant_name) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 cursor-not-allowed shadow-sm" readonly required>
                                 </div>
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">IC Number *</label>
-                                    <input type="text" id="applicant_ic_input" name="applicant_ic" value="{{ old('applicant_ic', $application->applicant_ic) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" placeholder="e.g. 900101-14-5555" maxlength="14" required>
+                                    <input type="text" id="applicant_ic_input" name="applicant_ic" value="{{ old('applicant_ic', $application->applicant_ic) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 cursor-not-allowed shadow-sm" placeholder="e.g. 900101-14-5555" maxlength="14" readonly required>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Date of Birth *</label>
-                                    <input type="date" id="applicant_dob_input" name="applicant_dob" value="{{ old('applicant_dob', $application->applicant_dob) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                    <input type="date" id="applicant_dob_input" name="applicant_dob" value="{{ old('applicant_dob', $application->applicant_dob) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 cursor-not-allowed shadow-sm" onkeydown="return false;" onfocus="this.blur();" readonly required>
                                 </div>
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Gender *</label>
-                                    <select name="applicant_gender" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                    <select class="appearance-none bg-none mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 cursor-not-allowed shadow-sm" disabled required>
                                         <option value="">Select</option>
                                         <option value="Lelaki" {{ old('applicant_gender', $application->applicant_gender) == 'Lelaki' ? 'selected' : '' }}>Male</option>
                                         <option value="Perempuan" {{ old('applicant_gender', $application->applicant_gender) == 'Perempuan' ? 'selected' : '' }}>Female</option>
                                     </select>
+                                    <input type="hidden" name="applicant_gender" value="{{ old('applicant_gender', $application->applicant_gender) }}">
                                 </div>
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Marital Status *</label>
-                                    <select name="applicant_marital_status" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                    <select class="appearance-none bg-none mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 cursor-not-allowed shadow-sm" disabled required>
                                         <option value="">Select</option>
                                         <option value="Single" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Single' ? 'selected' : '' }}>Single</option>
                                         <option value="Married" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Married' ? 'selected' : '' }}>Married</option>
@@ -80,6 +81,7 @@
                                         <option value="Widowed" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Widowed' ? 'selected' : '' }}>Widowed</option>
                                         <option value="Other" {{ old('applicant_marital_status', $application->applicant_marital_status) == 'Other' ? 'selected' : '' }}>Other</option>
                                     </select>
+                                    <input type="hidden" name="applicant_marital_status" value="{{ old('applicant_marital_status', $application->applicant_marital_status) }}">
                                 </div>
                             </div>
 
@@ -95,18 +97,46 @@
                                 </div>
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Email *</label>
-                                    <input type="email" name="applicant_email" value="{{ old('applicant_email', $application->applicant_email) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                    <input type="email" name="applicant_email" value="{{ old('applicant_email', $application->applicant_email) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 cursor-not-allowed shadow-sm" readonly required>
                                 </div>
                                 <div>
                                     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Occupation *</label>
-                                    <input type="text" name="applicant_occupation" value="{{ old('applicant_occupation', $application->applicant_occupation) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                    <select id="applicant_occupation_select" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                        <option value="Student">Student</option>
+                                        <option value="Government Servant">Government Servant</option>
+                                        <option value="Private Sector Employee">Private Sector Employee</option>
+                                        <option value="Self-employed">Self-employed</option>
+                                        <option value="Businessman">Businessman</option>
+                                        <option value="Unemployed">Unemployed</option>
+                                        <option value="Retired">Retired</option>
+                                        <option value="Housewife">Housewife</option>
+                                        <option value="Teacher">Teacher</option>
+                                        <option value="Lecturer">Lecturer</option>
+                                        <option value="Nurse">Nurse</option>
+                                        <option value="Doctor">Doctor</option>
+                                        <option value="Accountant">Accountant</option>
+                                        <option value="Engineer">Engineer</option>
+                                        <option value="Clerk">Clerk</option>
+                                        <option value="Driver">Driver</option>
+                                        <option value="General Worker">General Worker</option>
+                                        <option value="Factory Worker">Factory Worker</option>
+                                        <option value="Farmer">Farmer</option>
+                                        <option value="Fisherman">Fisherman</option>
+                                        <option value="Part-time">Part-time</option>
+                                        <option value="Others">Others (Please specify)</option>
+                                    </select>
+                                    <div id="applicant_occupation_other_container" class="mt-2 hidden">
+                                        <label class="block font-medium text-xs text-gray-500 dark:text-gray-400">Please specify occupation *</label>
+                                        <input type="text" id="applicant_occupation_other" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm">
+                                    </div>
+                                    <input type="hidden" name="applicant_occupation" id="applicant_occupation" value="{{ old('applicant_occupation', $application->applicant_occupation) }}">
                                 </div>
                             </div>
                             
                             
 
                             <div class="mt-6 flex items-center justify-end">
-                                <button type="button" onclick="switchTab(2)" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700 transition shadow">Next (Parents) &rarr;</button>
+                                <button type="button" onclick="switchTab(2)" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700 transition shadow">Next &rarr;</button>
                             </div>
                         </div>
 
@@ -123,7 +153,35 @@
                                     </div>
                                     <div>
                                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Father's Occupation *</label>
-                                        <input type="text" name="father_occupation" value="{{ old('father_occupation', $application->father_occupation) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                        <select id="father_occupation_select" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                            <option value="">Select Occupation</option>
+                                            <option value="Government Servant">Government Servant</option>
+                                            <option value="Private Sector Employee">Private Sector Employee</option>
+                                            <option value="Self-employed">Self-employed</option>
+                                            <option value="Businessman">Businessman</option>
+                                            <option value="Unemployed">Unemployed</option>
+                                            <option value="Retired">Retired</option>
+                                            <option value="Housewife">Housewife</option>
+                                            <option value="Teacher">Teacher</option>
+                                            <option value="Lecturer">Lecturer</option>
+                                            <option value="Nurse">Nurse</option>
+                                            <option value="Doctor">Doctor</option>
+                                            <option value="Accountant">Accountant</option>
+                                            <option value="Engineer">Engineer</option>
+                                            <option value="Clerk">Clerk</option>
+                                            <option value="Driver">Driver</option>
+                                            <option value="General Worker">General Worker</option>
+                                            <option value="Factory Worker">Factory Worker</option>
+                                            <option value="Farmer">Farmer</option>
+                                            <option value="Fisherman">Fisherman</option>
+                                            <option value="Student">Student</option>
+                                            <option value="Others">Others (Please specify)</option>
+                                        </select>
+                                        <div id="father_occupation_other_container" class="mt-2 hidden">
+                                            <label class="block font-medium text-xs text-gray-500 dark:text-gray-400">Please specify occupation *</label>
+                                            <input type="text" id="father_occupation_other" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm">
+                                        </div>
+                                        <input type="hidden" name="father_occupation" id="father_occupation" value="{{ old('father_occupation', $application->father_occupation) }}">
                                     </div>
                                     <div>
                                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Father's Income (RM) *</label>
@@ -141,7 +199,35 @@
                                     </div>
                                     <div>
                                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Mother's Occupation *</label>
-                                        <input type="text" name="mother_occupation" value="{{ old('mother_occupation', $application->mother_occupation) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                        <select id="mother_occupation_select" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                            <option value="">Select Occupation</option>
+                                            <option value="Government Servant">Government Servant</option>
+                                            <option value="Private Sector Employee">Private Sector Employee</option>
+                                            <option value="Self-employed">Self-employed</option>
+                                            <option value="Businessman">Businessman</option>
+                                            <option value="Unemployed">Unemployed</option>
+                                            <option value="Retired">Retired</option>
+                                            <option value="Housewife">Housewife</option>
+                                            <option value="Teacher">Teacher</option>
+                                            <option value="Lecturer">Lecturer</option>
+                                            <option value="Nurse">Nurse</option>
+                                            <option value="Doctor">Doctor</option>
+                                            <option value="Accountant">Accountant</option>
+                                            <option value="Engineer">Engineer</option>
+                                            <option value="Clerk">Clerk</option>
+                                            <option value="Driver">Driver</option>
+                                            <option value="General Worker">General Worker</option>
+                                            <option value="Factory Worker">Factory Worker</option>
+                                            <option value="Farmer">Farmer</option>
+                                            <option value="Fisherman">Fisherman</option>
+                                            <option value="Student">Student</option>
+                                            <option value="Others">Others (Please specify)</option>
+                                        </select>
+                                        <div id="mother_occupation_other_container" class="mt-2 hidden">
+                                            <label class="block font-medium text-xs text-gray-500 dark:text-gray-400">Please specify occupation *</label>
+                                            <input type="text" id="mother_occupation_other" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm">
+                                        </div>
+                                        <input type="hidden" name="mother_occupation" id="mother_occupation" value="{{ old('mother_occupation', $application->mother_occupation) }}">
                                     </div>
                                     <div>
                                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Mother's Income (RM) *</label>
@@ -156,22 +242,16 @@
                             </div>
 
                             <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800 mb-6">
-                                <h4 class="font-bold text-indigo-900 dark:text-indigo-200 mb-3">Dependents & Aid Information</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label class="block font-medium text-sm text-indigo-800 dark:text-indigo-300">Number of Family Dependents *</label>
-                                        <input type="number" name="total_dependents" value="{{ old('total_dependents', $application->total_dependents) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
-                                    </div>
-                                    <div>
-                                        <label class="block font-medium text-sm text-indigo-800 dark:text-indigo-300">Requested Amount (RM) (Optional)</label>
-                                        <input type="number" step="0.01" name="amount_requested" value="{{ old('amount_requested', $application->amount_requested) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm placeholder-gray-400">
-                                    </div>
+                                <h4 class="font-bold text-indigo-900 dark:text-indigo-200 mb-3">Dependents Information</h4>
+                                <div>
+                                    <label class="block font-medium text-sm text-indigo-800 dark:text-indigo-300">Number of Family Dependents *</label>
+                                    <input type="number" name="total_dependents" value="{{ old('total_dependents', $application->total_dependents) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                 </div>
                             </div>
 
                             <div class="mt-6 flex items-center justify-between">
-                                <button type="button" onclick="switchTab(1)" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 font-semibold rounded hover:bg-gray-50 transition shadow-sm">&larr; Back (Applicant)</button>
-                                <button type="button" onclick="switchTab(3)" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700 transition shadow">Next (Education) &rarr;</button>
+                                <button type="button" onclick="switchTab(1)" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 font-semibold rounded hover:bg-gray-50 transition shadow-sm">&larr; Back</button>
+                                <button type="button" onclick="switchTab(3)" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700 transition shadow">Next &rarr;</button>
                             </div>
                         </div>
 
@@ -181,36 +261,60 @@
 
                             <!-- Education -->
                             <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl mb-6 border border-blue-200 dark:border-blue-800">
-                                <h4 class="font-bold text-blue-900 dark:text-blue-200 mb-3 border-b border-blue-200 dark:border-blue-800 pb-2">Maklumat Pendidikan (Education)</h4>
+                                <h4 class="font-bold text-blue-900 dark:text-blue-200 mb-3 border-b border-blue-200 dark:border-blue-800 pb-2">Education Information</h4>
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                                    <div class="md:col-span-2">
-                                        <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">University Name (Nama Universiti) *</label>
-                                        <input type="text" name="university_name" value="{{ old('university_name', $application->university_name) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
-                                    </div>
+                                     <div class="md:col-span-2 relative" id="university_combobox_container">
+                                         <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">University Name *</label>
+                                         <div class="relative mt-1">
+                                             <input type="text" id="university_search_input" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm pr-10 focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="Search or type university name..." autocomplete="off" required>
+                                             <button type="button" id="university_toggle_btn" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                                 <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                                     <path d="M7 10l5 5 5-5H7z" fill="currentColor"/>
+                                                 </svg>
+                                             </button>
+                                         </div>
+                                         <div id="university_dropdown_list" class="absolute z-10 mt-1 hidden w-full rounded-md bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-y-auto">
+                                             <ul id="university_options_ul" class="py-1 text-sm text-gray-700 dark:text-gray-200">
+                                             </ul>
+                                         </div>
+                                         <input type="hidden" name="university_name" id="university_hidden_input" value="{{ old('university_name', $application->university_name) }}">
+                                     </div>
+                                    <div class="relative" id="course_combobox_container">
+                                         <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Course Name *</label>
+                                         <div class="relative mt-1">
+                                             <input type="text" id="course_search_input" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm pr-10 focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="Search or type course name..." autocomplete="off" required>
+                                             <button type="button" id="course_toggle_btn" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                                 <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                                     <path d="M7 10l5 5 5-5H7z" fill="currentColor"/>
+                                                 </svg>
+                                             </button>
+                                         </div>
+                                         <div id="course_dropdown_list" class="absolute z-10 mt-1 hidden w-full rounded-md bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 max-h-60 overflow-y-auto">
+                                             <ul id="course_options_ul" class="py-1 text-sm text-gray-700 dark:text-gray-200">
+                                             </ul>
+                                         </div>
+                                         <input type="hidden" name="course_name" id="course_hidden_input" value="{{ old('course_name', $application->course_name) }}">
+                                     </div>
                                     <div>
-                                        <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Course Name (Nama Kursus) *</label>
-                                        <input type="text" name="course_name" value="{{ old('course_name', $application->course_name) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
-                                    </div>
-                                    <div>
-                                        <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Level of Study (Tahap Pengajian) *</label>
+                                        <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Level of Study *</label>
                                         <select name="study_level" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                             <option value="">Select Level</option>
-                                            <option value="Sijil" {{ old('study_level', $application->study_level) == 'Sijil' ? 'selected' : '' }}>Sijil</option>
+                                            <option value="Sijil" {{ old('study_level', $application->study_level) == 'Sijil' ? 'selected' : '' }}>Certificate</option>
                                             <option value="Diploma" {{ old('study_level', $application->study_level) == 'Diploma' ? 'selected' : '' }}>Diploma</option>
-                                            <option value="Ijazah Sarjana Muda" {{ old('study_level', $application->study_level) == 'Ijazah Sarjana Muda' ? 'selected' : '' }}>Ijazah Sarjana Muda (Degree)</option>
-                                            <option value="Sarjana" {{ old('study_level', $application->study_level) == 'Sarjana' ? 'selected' : '' }}>Sarjana (Master)</option>
+                                            <option value="Ijazah Sarjana Muda" {{ old('study_level', $application->study_level) == 'Ijazah Sarjana Muda' ? 'selected' : '' }}>Bachelor's Degree</option>
+                                            <option value="Sarjana" {{ old('study_level', $application->study_level) == 'Sarjana' ? 'selected' : '' }}>Master's Degree</option>
                                             <option value="PhD" {{ old('study_level', $application->study_level) == 'PhD' ? 'selected' : '' }}>PhD</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Start Year (Tahun Mula) *</label>
+                                        <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Start Year *</label>
                                         <input type="number" name="start_year" value="{{ old('start_year', $application->start_year) }}" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                     </div>
                                     <div>
-                                        <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">End Year (Tahun Tamat) *</label>
+                                        <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">End Year *</label>
                                         <input type="number" name="end_year" value="{{ old('end_year', $application->end_year) }}" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                     </div>
                                 </div>
@@ -218,10 +322,10 @@
 
                             <!-- Bank -->
                             <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl mb-6 border border-green-200 dark:border-green-800">
-                                <h4 class="font-bold text-green-900 dark:text-green-200 mb-3 border-b border-green-200 dark:border-green-800 pb-2">Maklumat Perbankan (Banking)</h4>
+                                <h4 class="font-bold text-green-900 dark:text-green-200 mb-3 border-b border-green-200 dark:border-green-800 pb-2">Banking Information</h4>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label class="block font-medium text-sm text-green-800 dark:text-green-300">Bank Name (Jenis Bank) *</label>
+                                        <label class="block font-medium text-sm text-green-800 dark:text-green-300">Bank Name *</label>
                                         <select name="bank_name" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                             <option value="">Select Bank</option>
                                             <option value="Maybank" {{ old('bank_name', $application->bank_name) == 'Maybank' ? 'selected' : '' }}>Maybank</option>
@@ -238,58 +342,58 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block font-medium text-sm text-green-800 dark:text-green-300">Account Number (No Akaun) *</label>
-                                        <input type="text" name="account_number" value="{{ old('account_number', $application->account_number) }}" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                        <label class="block font-medium text-sm text-green-800 dark:text-green-300">Account Number *</label>
+                                        <input type="text" id="account_number_input" name="account_number" value="{{ old('account_number', $application->account_number) }}" maxlength="16" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mt-6 flex items-center justify-between">
-                                <button type="button" onclick="switchTab(2)" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 font-semibold rounded hover:bg-gray-50 transition shadow-sm">&larr; Back (Parents)</button>
-                                <button type="button" onclick="switchTab(4)" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700 transition shadow">Next (Documents) &rarr;</button>
+                                <button type="button" onclick="switchTab(2)" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 font-semibold rounded hover:bg-gray-50 transition shadow-sm">&larr; Back</button>
+                                <button type="button" onclick="switchTab(4)" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700 transition shadow">Next &rarr;</button>
                             </div>
                         </div>
 
                         <!-- TAB 4: Documents -->
                         <div id="tab-4" class="hidden">
-                            <h3 class="text-lg font-bold mb-4 text-indigo-900 dark:text-indigo-300">Dokumen Sokongan (Supporting Documents)</h3>
+                            <h3 class="text-lg font-bold mb-4 text-indigo-900 dark:text-indigo-300">Supporting Documents</h3>
 
                             <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-xl mb-6 border border-yellow-200 dark:border-yellow-800">
-                                <p class="text-sm text-yellow-800 dark:text-yellow-200 mb-4">Sila muat naik salinan dokumen berikut (Biarkan kosong jika tidak mahu tukar fail sedia ada). Format yang dibenarkan: PDF, JPG, PNG (Maksimum 5MB setiap fail).</p>
+                                <p class="text-sm text-yellow-800 dark:text-yellow-200 mb-4">Please upload copies of the following documents (Leave blank if you do not wish to change the existing file). Allowed formats: PDF, JPG, PNG (Maximum 5MB per file).</p>
                                 
                                 <div class="space-y-6">
                                     <div>
-                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">1. Salinan Kad Pengenalan Pelajar (Applicant IC)</label>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">1. Applicant IC Copy</label>
                                         @if($application->doc_student_ic)
-                                            <p class="text-sm text-green-600 mb-1">&check; Dokumen sedia ada: <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="underline">Lihat Dokumen</a></p>
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="underline">View Document</a></p>
                                         @endif
                                         <input type="file" name="doc_student_ic" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
                                     </div>
                                     <div>
-                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">2. Salinan Sijil Lahir Pelajar (Applicant Birth Cert)</label>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">2. Applicant Birth Certificate Copy</label>
                                         @if($application->doc_student_birth_cert)
-                                            <p class="text-sm text-green-600 mb-1">&check; Dokumen sedia ada: <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="underline">Lihat Dokumen</a></p>
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="underline">View Document</a></p>
                                         @endif
                                         <input type="file" name="doc_student_birth_cert" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
                                     </div>
                                     <div>
-                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">3. Salinan Kad Pengenalan Ibu (Mother's IC)</label>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">3. Mother's IC Copy</label>
                                         @if($application->doc_mother_ic)
-                                            <p class="text-sm text-green-600 mb-1">&check; Dokumen sedia ada: <a href="{{ Storage::url($application->doc_mother_ic) }}" target="_blank" class="underline">Lihat Dokumen</a></p>
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_mother_ic) }}" target="_blank" class="underline">View Document</a></p>
                                         @endif
                                         <input type="file" name="doc_mother_ic" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
                                     </div>
                                     <div>
-                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">4. Salinan Kad Pengenalan Bapa (Father's IC)</label>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">4. Father's IC Copy</label>
                                         @if($application->doc_father_ic)
-                                            <p class="text-sm text-green-600 mb-1">&check; Dokumen sedia ada: <a href="{{ Storage::url($application->doc_father_ic) }}" target="_blank" class="underline">Lihat Dokumen</a></p>
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_father_ic) }}" target="_blank" class="underline">View Document</a></p>
                                         @endif
                                         <input type="file" name="doc_father_ic" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
                                     </div>
                                     <div>
-                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">5. Salinan Surat Tawaran IPT (IPT Offer Letter)</label>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">5. IPT Offer Letter Copy</label>
                                         @if($application->doc_offer_letter)
-                                            <p class="text-sm text-green-600 mb-1">&check; Dokumen sedia ada: <a href="{{ Storage::url($application->doc_offer_letter) }}" target="_blank" class="underline">Lihat Dokumen</a></p>
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_offer_letter) }}" target="_blank" class="underline">View Document</a></p>
                                         @endif
                                         <input type="file" name="doc_offer_letter" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
                                     </div>
@@ -297,7 +401,7 @@
                             </div>
 
                             <div class="mt-6 flex items-center justify-between">
-                                <button type="button" onclick="switchTab(3)" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 font-semibold rounded hover:bg-gray-50 transition shadow-sm">&larr; Back (Education & Bank)</button>
+                                <button type="button" onclick="switchTab(3)" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 font-semibold rounded hover:bg-gray-50 transition shadow-sm">&larr; Back</button>
                                 
                                 <div class="flex items-center">
                                     <a href="{{ route('applicant.dashboard') }}" class="mr-4 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 transition">Cancel</a>
@@ -441,6 +545,662 @@
         mIncInput.addEventListener('input', updateTotal);
         // Run once on load just in case there's old() data
         updateTotal();
+
+        // Occupation select handling (shared variables & functions)
+        const commonOccupationMappings = {
+            'tidak bekerja': 'Unemployed',
+            'unemployed': 'Unemployed',
+            'pesara': 'Retired',
+            'retired': 'Retired',
+            'suri rumah': 'Housewife',
+            'housewife': 'Housewife',
+            'akauntan': 'Accountant',
+            'accountant': 'Accountant',
+            'guru': 'Teacher',
+            'teacher': 'Teacher',
+            'pensyarah': 'Lecturer',
+            'lecturer': 'Lecturer',
+            'jururawat': 'Nurse',
+            'nurse': 'Nurse',
+            'doktor': 'Doctor',
+            'doctor': 'Doctor',
+            'jurutera': 'Engineer',
+            'engineer': 'Engineer',
+            'kerani': 'Clerk',
+            'clerk': 'Clerk',
+            'pemandu': 'Driver',
+            'driver': 'Driver',
+            'bekerja sendiri': 'Self-employed',
+            'self-employed': 'Self-employed',
+            'self employed': 'Self-employed',
+            'pelajar': 'Student',
+            'student': 'Student',
+            'penjawat awam': 'Government Servant',
+            'kakitangan awam': 'Government Servant',
+            'kakitangan kerajaan': 'Government Servant',
+            'kerajaan': 'Government Servant',
+            'government servant': 'Government Servant',
+            'pekerja swasta': 'Private Sector Employee',
+            'swasta': 'Private Sector Employee',
+            'private sector employee': 'Private Sector Employee',
+            'peniaga': 'Businessman',
+            'businessman': 'Businessman',
+            'ahli perniagaan': 'Businessman',
+            'pekerja am': 'General Worker',
+            'buruh': 'General Worker',
+            'general worker': 'General Worker',
+            'operator kilang': 'Factory Worker',
+            'operator mesin': 'Factory Worker',
+            'factory worker': 'Factory Worker',
+            'petani': 'Farmer',
+            'farmer': 'Farmer',
+            'nelayan': 'Fisherman',
+            'fisherman': 'Fisherman'
+        };
+
+        const presetOccupations = [
+            'Government Servant', 'Private Sector Employee', 'Self-employed', 'Businessman', 
+            'Unemployed', 'Retired', 'Housewife', 'Teacher', 'Lecturer', 'Nurse', 
+            'Doctor', 'Accountant', 'Engineer', 'Clerk', 'Driver', 'General Worker', 
+            'Factory Worker', 'Farmer', 'Fisherman', 'Student', 'Employed', 'Part-time'
+        ];
+
+        function getPresetValue(value) {
+            if (!value) return '';
+            const normalized = value.trim().toLowerCase();
+            return commonOccupationMappings[normalized] || '';
+        }
+
+        // Applicant Occupation select handling
+        const occSelect = document.getElementById('applicant_occupation_select');
+        const occOtherContainer = document.getElementById('applicant_occupation_other_container');
+        const occOtherInput = document.getElementById('applicant_occupation_other');
+        const occHiddenInput = document.getElementById('applicant_occupation');
+
+        function toggleApplicantOccupationInput() {
+            if (occSelect.value === 'Others') {
+                occOtherContainer.classList.remove('hidden');
+                occOtherInput.required = true;
+                occHiddenInput.value = occOtherInput.value;
+            } else {
+                occOtherContainer.classList.add('hidden');
+                occOtherInput.required = false;
+                occHiddenInput.value = occSelect.value;
+            }
+        }
+
+        function updateApplicantOccupationHidden() {
+            if (occSelect.value === 'Others') {
+                occHiddenInput.value = occOtherInput.value;
+            }
+        }
+
+        function initApplicantOccupation() {
+            const initialValue = occHiddenInput.value || 'Student';
+            const preset = getPresetValue(initialValue);
+            if (preset) {
+                occSelect.value = preset;
+                occOtherContainer.classList.add('hidden');
+                occOtherInput.required = false;
+            } else if (presetOccupations.includes(initialValue)) {
+                occSelect.value = initialValue;
+                occOtherContainer.classList.add('hidden');
+                occOtherInput.required = false;
+            } else {
+                occSelect.value = 'Others';
+                occOtherContainer.classList.remove('hidden');
+                occOtherInput.required = true;
+                occOtherInput.value = initialValue;
+            }
+        }
+
+        occSelect.addEventListener('change', toggleApplicantOccupationInput);
+        occOtherInput.addEventListener('input', updateApplicantOccupationHidden);
+        initApplicantOccupation();
+
+        // Father Occupation select handling
+        const fatherOccSelect = document.getElementById('father_occupation_select');
+        const fatherOccOtherContainer = document.getElementById('father_occupation_other_container');
+        const fatherOccOtherInput = document.getElementById('father_occupation_other');
+        const fatherOccHiddenInput = document.getElementById('father_occupation');
+
+        function toggleFatherOccupationInput() {
+            if (fatherOccSelect.value === 'Others') {
+                fatherOccOtherContainer.classList.remove('hidden');
+                fatherOccOtherInput.required = true;
+                fatherOccHiddenInput.value = fatherOccOtherInput.value;
+            } else {
+                fatherOccOtherContainer.classList.add('hidden');
+                fatherOccOtherInput.required = false;
+                fatherOccHiddenInput.value = fatherOccSelect.value;
+            }
+        }
+
+        function updateFatherOccupationHidden() {
+            if (fatherOccSelect.value === 'Others') {
+                fatherOccHiddenInput.value = fatherOccOtherInput.value;
+            }
+        }
+
+        function initFatherOccupation() {
+            const initialValue = fatherOccHiddenInput.value || '';
+            const preset = getPresetValue(initialValue);
+            if (initialValue === '') {
+                fatherOccSelect.value = '';
+                fatherOccOtherContainer.classList.add('hidden');
+                fatherOccOtherInput.required = false;
+            } else if (preset) {
+                fatherOccSelect.value = preset;
+                fatherOccOtherContainer.classList.add('hidden');
+                fatherOccOtherInput.required = false;
+            } else if (presetOccupations.includes(initialValue)) {
+                fatherOccSelect.value = initialValue;
+                fatherOccOtherContainer.classList.add('hidden');
+                fatherOccOtherInput.required = false;
+            } else {
+                fatherOccSelect.value = 'Others';
+                fatherOccOtherContainer.classList.remove('hidden');
+                fatherOccOtherInput.required = true;
+                fatherOccOtherInput.value = initialValue;
+            }
+        }
+
+        fatherOccSelect.addEventListener('change', toggleFatherOccupationInput);
+        fatherOccOtherInput.addEventListener('input', updateFatherOccupationHidden);
+        initFatherOccupation();
+
+        // Mother Occupation select handling
+        const motherOccSelect = document.getElementById('mother_occupation_select');
+        const motherOccOtherContainer = document.getElementById('mother_occupation_other_container');
+        const motherOccOtherInput = document.getElementById('mother_occupation_other');
+        const motherOccHiddenInput = document.getElementById('mother_occupation');
+
+        function toggleMotherOccupationInput() {
+            if (motherOccSelect.value === 'Others') {
+                motherOccOtherContainer.classList.remove('hidden');
+                motherOccOtherInput.required = true;
+                motherOccHiddenInput.value = motherOccOtherInput.value;
+            } else {
+                motherOccOtherContainer.classList.add('hidden');
+                motherOccOtherInput.required = false;
+                motherOccHiddenInput.value = motherOccSelect.value;
+            }
+        }
+
+        function updateMotherOccupationHidden() {
+            if (motherOccSelect.value === 'Others') {
+                motherOccHiddenInput.value = motherOccOtherInput.value;
+            }
+        }
+
+        function initMotherOccupation() {
+            const initialValue = motherOccHiddenInput.value || '';
+            const preset = getPresetValue(initialValue);
+            if (initialValue === '') {
+                motherOccSelect.value = '';
+                motherOccOtherContainer.classList.add('hidden');
+                motherOccOtherInput.required = false;
+            } else if (preset) {
+                motherOccSelect.value = preset;
+                motherOccOtherContainer.classList.add('hidden');
+                motherOccOtherInput.required = false;
+            } else if (presetOccupations.includes(initialValue)) {
+                motherOccSelect.value = initialValue;
+                motherOccOtherContainer.classList.add('hidden');
+                motherOccOtherInput.required = false;
+            } else {
+                motherOccSelect.value = 'Others';
+                motherOccOtherContainer.classList.remove('hidden');
+                motherOccOtherInput.required = true;
+                motherOccOtherInput.value = initialValue;
+            }
+        }
+
+        motherOccSelect.addEventListener('change', toggleMotherOccupationInput);
+        motherOccOtherInput.addEventListener('input', updateMotherOccupationHidden);
+        initMotherOccupation();
+
+        // University Combobox handling
+        function initUniversityCombobox() {
+            const searchInput = document.getElementById('university_search_input');
+            const toggleBtn = document.getElementById('university_toggle_btn');
+            const dropdownList = document.getElementById('university_dropdown_list');
+            const optionsUl = document.getElementById('university_options_ul');
+            const hiddenInput = document.getElementById('university_hidden_input');
+
+            if (!searchInput || !dropdownList || !optionsUl || !hiddenInput) return;
+
+            const universities = [
+                "Universiti Teknologi MARA (UiTM)",
+                "Universiti Malaya (UM)",
+                "Universiti Kebangsaan Malaysia (UKM)",
+                "Universiti Sains Malaysia (USM)",
+                "Universiti Putra Malaysia (UPM)",
+                "Universiti Teknologi Malaysia (UTM)",
+                "Universiti Islam Antarabangsa Malaysia (UIAM)",
+                "Universiti Utara Malaysia (UUM)",
+                "Universiti Malaysia Sarawak (UNIMAS)",
+                "Universiti Malaysia Sabah (UMS)",
+                "Universiti Pendidikan Sultan Idris (UPSI)",
+                "Universiti Sains Islam Malaysia (USIM)",
+                "Universiti Malaysia Terengganu (UMT)",
+                "Universiti Malaysia Pahang Al-Sultan Abdullah (UMPSA)",
+                "Universiti Malaysia Perlis (UniMAP)",
+                "Universiti Sultan Zainal Abidin (UniSZA)",
+                "Universiti Pertahanan Nasional Malaysia (UPNM)",
+                "Universiti Malaysia Kelantan (UMK)",
+                "Universiti Teknikal Malaysia Melaka (UTeM)",
+                "Universiti Tun Hussein Onn Malaysia (UTHM)",
+                "Multimedia University (MMU)",
+                "Universiti Tenaga Nasional (UNITEN)",
+                "Universiti Teknologi Petronas (UTP)",
+                "Universiti Tunku Abdul Rahman (UTAR)",
+                "Wawasan Open University (WOU)",
+                "Open University Malaysia (OUM)",
+                "Sunway University",
+                "Taylor's University",
+                "UCSI University",
+                "INTI International University",
+                "Asia Pacific University of Technology & Innovation (APU)",
+                "Management and Science University (MSU)",
+                "SEGi University",
+                "Infrastructure University Kuala Lumpur (IUKL)",
+                "Universiti Kuala Lumpur (UniKL)",
+                "Universiti Tun Abdul Razak (UNIRAZAK)",
+                "Curtin University Malaysia",
+                "Monash University Malaysia",
+                "Swinburne University of Technology Sarawak Campus",
+                "The University of Nottingham Malaysia Campus",
+                "Heriot-Watt University Malaysia",
+                "Xiamen University Malaysia",
+                "Manipal International University",
+                "Nilai University",
+                "Quest International University",
+                "AIMST University",
+                "First City University College",
+                "Help University",
+                "Mahsa University",
+                "Binary University",
+                "Perdana University",
+                "City University Malaysia",
+                "DRB-HICOM University of Automotive Malaysia",
+                "Lincoln University College",
+                "Meritus University",
+                "Perlis Islamic University College (KUIPs)",
+                "University of Cyberjaya (UoC)"
+            ];
+
+            // Set initial value
+            if (hiddenInput.value) {
+                searchInput.value = hiddenInput.value;
+                if (typeof window.onUniversityChange === 'function') {
+                    window.onUniversityChange(hiddenInput.value);
+                }
+            }
+
+            function renderOptions(filterText = '') {
+                optionsUl.innerHTML = '';
+                const lowerFilter = filterText.toLowerCase().trim();
+                
+                // Show "Use custom:" option at the top if user has typed something that isn't an exact match
+                if (lowerFilter && !universities.some(u => u.toLowerCase() === lowerFilter)) {
+                    const customLi = document.createElement('li');
+                    customLi.className = 'px-4 py-2 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600 hover:text-white cursor-pointer transition-colors border-b border-gray-100 dark:border-gray-700 font-medium';
+                    customLi.textContent = `Use custom: "${filterText}"`;
+                    customLi.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        selectValue(filterText);
+                    });
+                    optionsUl.appendChild(customLi);
+                }
+
+                const filtered = universities.filter(u => u.toLowerCase().includes(lowerFilter));
+
+                if (filtered.length === 0 && !lowerFilter) {
+                    const noValLi = document.createElement('li');
+                    noValLi.className = 'px-4 py-2 text-gray-400 dark:text-gray-500 italic';
+                    noValLi.textContent = 'No universities found';
+                    optionsUl.appendChild(noValLi);
+                } else {
+                    filtered.forEach(univ => {
+                        const li = document.createElement('li');
+                        li.className = 'px-4 py-2 hover:bg-indigo-600 hover:text-white cursor-pointer dark:hover:bg-indigo-600 transition-colors';
+                        li.textContent = univ;
+                        li.addEventListener('mousedown', (e) => {
+                            e.preventDefault();
+                            selectValue(univ);
+                        });
+                        optionsUl.appendChild(li);
+                    });
+                }
+            }
+
+            function selectValue(val) {
+                searchInput.value = val;
+                hiddenInput.value = val;
+                hideDropdown();
+                if (typeof window.onUniversityChange === 'function') {
+                    window.onUniversityChange(val);
+                }
+            }
+
+            function showDropdown() {
+                dropdownList.classList.remove('hidden');
+                renderOptions(searchInput.value);
+            }
+
+            function hideDropdown() {
+                dropdownList.classList.add('hidden');
+            }
+
+            searchInput.addEventListener('focus', showDropdown);
+            searchInput.addEventListener('input', (e) => {
+                showDropdown();
+                hiddenInput.value = e.target.value;
+                if (typeof window.onUniversityChange === 'function') {
+                    window.onUniversityChange(e.target.value);
+                }
+            });
+
+            searchInput.addEventListener('blur', () => {
+                hiddenInput.value = searchInput.value;
+                hideDropdown();
+                if (typeof window.onUniversityChange === 'function') {
+                    window.onUniversityChange(searchInput.value);
+                }
+            });
+
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (dropdownList.classList.contains('hidden')) {
+                    searchInput.focus();
+                    showDropdown();
+                } else {
+                    hideDropdown();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#university_combobox_container')) {
+                    dropdownList.classList.add('hidden');
+                }
+            });
+        }
+
+        // Course Combobox data and handling
+        const courseMap = {
+            "Universiti Teknologi MARA (UiTM)": [
+                "Diploma in Computer Science",
+                "Diploma in Information Technology",
+                "Bachelor of Computer Science (Hons)",
+                "Bachelor of Information Technology (Hons)",
+                "Bachelor of Business Administration (Hons) Finance",
+                "Bachelor of Business Administration (Hons) Marketing",
+                "Bachelor of Accountancy (Hons)",
+                "Bachelor of Civil Engineering (Hons)",
+                "Bachelor of Mechanical Engineering (Hons)",
+                "Bachelor of Electrical Engineering (Hons)",
+                "Bachelor of Chemical Engineering (Hons)",
+                "Bachelor of Medicine and Bachelor of Surgery (MBBS)",
+                "Bachelor of Pharmacy (Hons)",
+                "Bachelor of Nursing (Hons)",
+                "Bachelor of Art and Design (Hons)",
+                "Bachelor of Communication and Media Studies (Hons)"
+            ],
+            "Universiti Malaya (UM)": [
+                "Bachelor of Computer Science (Software Engineering)",
+                "Bachelor of Computer Science (Computer Systems and Networks)",
+                "Bachelor of Computer Science (Information Systems)",
+                "Bachelor of Information Technology (Multimedia)",
+                "Bachelor of Medicine and Bachelor of Surgery (MBBS)",
+                "Bachelor of Dental Surgery",
+                "Bachelor of Pharmacy (Hons)",
+                "Bachelor of Laws (LL.B.)",
+                "Bachelor of Economics",
+                "Bachelor of Accounting",
+                "Bachelor of Business Administration",
+                "Bachelor of Engineering (Mechanical)",
+                "Bachelor of Engineering (Electrical)",
+                "Bachelor of Engineering (Chemical)",
+                "Bachelor of Engineering (Civil)",
+                "Bachelor of Science (Biomedical Science)"
+            ],
+            "Universiti Kebangsaan Malaysia (UKM)": [
+                "Bachelor of Computer Science (Hons)",
+                "Bachelor of Software Engineering (Hons)",
+                "Bachelor of Information Technology (Hons)",
+                "Bachelor of Medicine and Bachelor of Surgery",
+                "Bachelor of Pharmacy (Hons)",
+                "Bachelor of Laws (Hons)",
+                "Bachelor of Economics (Hons)",
+                "Bachelor of Business Administration (Hons)",
+                "Bachelor of Accounting (Hons)",
+                "Bachelor of Engineering (Mechanical) (Hons)",
+                "Bachelor of Engineering (Civil) (Hons)",
+                "Bachelor of Engineering (Electrical & Electronic) (Hons)"
+            ],
+            "Universiti Sains Malaysia (USM)": [
+                "Bachelor of Computer Science (Hons)",
+                "Bachelor of Software Engineering",
+                "Bachelor of Engineering (Mechanical Engineering)",
+                "Bachelor of Engineering (Electrical Engineering)",
+                "Bachelor of Engineering (Civil Engineering)",
+                "Bachelor of Medicine and Bachelor of Surgery (MBBS)",
+                "Bachelor of Pharmacy (Hons)",
+                "Bachelor of Science (Hons) (Physics)",
+                "Bachelor of Science (Hons) (Chemistry)",
+                "Bachelor of Science (Hons) (Mathematics)",
+                "Bachelor of Management (Hons)",
+                "Bachelor of Accounting (Hons)"
+            ],
+            "Universiti Putra Malaysia (UPM)": [
+                "Bachelor of Computer Science (Software Engineering)",
+                "Bachelor of Computer Science (Computer Networks)",
+                "Bachelor of Science (Agriculture)",
+                "Bachelor of Veterinary Medicine",
+                "Bachelor of Engineering (Mechanical)",
+                "Bachelor of Engineering (Civil)",
+                "Bachelor of Engineering (Electrical & Electronic)",
+                "Bachelor of Science (Hons) (Biology)",
+                "Bachelor of Science (Hons) (Chemistry)",
+                "Bachelor of Business Administration",
+                "Bachelor of Accounting"
+            ],
+            "Universiti Teknologi Malaysia (UTM)": [
+                "Bachelor of Computer Science (Software Engineering)",
+                "Bachelor of Computer Science (Computer Networks & Security)",
+                "Bachelor of Computer Science (Graphics & Multimedia)",
+                "Bachelor of Engineering (Mechanical)",
+                "Bachelor of Engineering (Electrical)",
+                "Bachelor of Engineering (Chemical)",
+                "Bachelor of Engineering (Civil)",
+                "Bachelor of Science (Industrial Chemistry)",
+                "Bachelor of Science (Industrial Mathematics)",
+                "Bachelor of Science (Industrial Physics)"
+            ],
+            "Universiti Islam Antarabangsa Malaysia (UIAM)": [
+                "Bachelor of Computer Science (Hons)",
+                "Bachelor of Information Technology (Hons)",
+                "Bachelor of Laws (LL.B.) (Hons)",
+                "Bachelor of Laws (Shariah) (Hons)",
+                "Bachelor of Economics (Hons)",
+                "Bachelor of Business Administration (Hons)",
+                "Bachelor of Accounting (Hons)",
+                "Bachelor of Islamic Revealed Knowledge and Heritage (Hons)",
+                "Bachelor of Medicine (MBBS)",
+                "Bachelor of Pharmacy (Hons)",
+                "Bachelor of Engineering (Mechanical-Aeronautics) (Hons)"
+            ],
+            "Universiti Utara Malaysia (UUM)": [
+                "Bachelor of Science with Honors (Information Technology)",
+                "Bachelor of Business Administration with Honors",
+                "Bachelor of Accounting with Honors",
+                "Bachelor of Finance with Honors",
+                "Bachelor of Economics with Honors",
+                "Bachelor of Marketing with Honors",
+                "Bachelor of Human Resource Management with Honors",
+                "Bachelor of Law with Honors (LL.B)",
+                "Bachelor of Multimedia with Honors"
+            ]
+        };
+
+        const generalCourses = [
+            "Diploma in Computer Science",
+            "Diploma in Information Technology",
+            "Diploma in Business Administration",
+            "Diploma in Accounting",
+            "Diploma in Nursing",
+            "Diploma in Pharmacy",
+            "Diploma in Civil Engineering",
+            "Diploma in Mechanical Engineering",
+            "Diploma in Electrical Engineering",
+            "Bachelor of Computer Science (Hons)",
+            "Bachelor of Software Engineering (Hons)",
+            "Bachelor of Information Technology (Hons)",
+            "Bachelor of Business Administration (Hons)",
+            "Bachelor of Accounting (Hons)",
+            "Bachelor of Finance (Hons)",
+            "Bachelor of Marketing (Hons)",
+            "Bachelor of Economics (Hons)",
+            "Bachelor of Laws (LL.B.)",
+            "Bachelor of Medicine and Bachelor of Surgery (MBBS)",
+            "Bachelor of Pharmacy (Hons)",
+            "Bachelor of Nursing (Hons)",
+            "Bachelor of Civil Engineering (Hons)",
+            "Bachelor of Mechanical Engineering (Hons)",
+            "Bachelor of Electrical Engineering (Hons)",
+            "Bachelor of Chemical Engineering (Hons)",
+            "Bachelor of Science (Hons) (Physics)",
+            "Bachelor of Science (Hons) (Chemistry)",
+            "Bachelor of Science (Hons) (Mathematics)",
+            "Bachelor of Arts (Hons)",
+            "Bachelor of Communication (Hons)"
+        ];
+
+        function initCourseCombobox() {
+            const searchInput = document.getElementById('course_search_input');
+            const toggleBtn = document.getElementById('course_toggle_btn');
+            const dropdownList = document.getElementById('course_dropdown_list');
+            const optionsUl = document.getElementById('course_options_ul');
+            const hiddenInput = document.getElementById('course_hidden_input');
+
+            if (!searchInput || !dropdownList || !optionsUl || !hiddenInput) return;
+
+            // Set initial value
+            if (hiddenInput.value) {
+                searchInput.value = hiddenInput.value;
+            }
+
+            function getCourses() {
+                const univInput = document.getElementById('university_hidden_input');
+                const selectedUniv = univInput ? univInput.value : '';
+                if (selectedUniv && courseMap[selectedUniv]) {
+                    return courseMap[selectedUniv];
+                }
+                return generalCourses;
+            }
+
+            function renderOptions(filterText = '') {
+                optionsUl.innerHTML = '';
+                const lowerFilter = filterText.toLowerCase().trim();
+                const courses = getCourses();
+                
+                // Show "Use custom:" option at the top if user has typed something that isn't an exact match
+                if (lowerFilter && !courses.some(c => c.toLowerCase() === lowerFilter)) {
+                    const customLi = document.createElement('li');
+                    customLi.className = 'px-4 py-2 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600 hover:text-white cursor-pointer transition-colors border-b border-gray-100 dark:border-gray-700 font-medium';
+                    customLi.textContent = `Use custom: "${filterText}"`;
+                    customLi.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        selectValue(filterText);
+                    });
+                    optionsUl.appendChild(customLi);
+                }
+
+                const filtered = courses.filter(c => c.toLowerCase().includes(lowerFilter));
+
+                if (filtered.length === 0 && !lowerFilter) {
+                    const noValLi = document.createElement('li');
+                    noValLi.className = 'px-4 py-2 text-gray-400 dark:text-gray-500 italic';
+                    noValLi.textContent = 'No courses found';
+                    optionsUl.appendChild(noValLi);
+                } else {
+                    filtered.forEach(course => {
+                        const li = document.createElement('li');
+                        li.className = 'px-4 py-2 hover:bg-indigo-600 hover:text-white cursor-pointer dark:hover:bg-indigo-600 transition-colors';
+                        li.textContent = course;
+                        li.addEventListener('mousedown', (e) => {
+                            e.preventDefault();
+                            selectValue(course);
+                        });
+                        optionsUl.appendChild(li);
+                    });
+                }
+            }
+
+            function selectValue(val) {
+                searchInput.value = val;
+                hiddenInput.value = val;
+                hideDropdown();
+            }
+
+            function showDropdown() {
+                dropdownList.classList.remove('hidden');
+                renderOptions(searchInput.value);
+            }
+
+            function hideDropdown() {
+                dropdownList.classList.add('hidden');
+            }
+
+            searchInput.addEventListener('focus', showDropdown);
+            searchInput.addEventListener('input', (e) => {
+                showDropdown();
+                hiddenInput.value = e.target.value;
+            });
+
+            searchInput.addEventListener('blur', () => {
+                hiddenInput.value = searchInput.value;
+                hideDropdown();
+            });
+
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (dropdownList.classList.contains('hidden')) {
+                    searchInput.focus();
+                    showDropdown();
+                } else {
+                    hideDropdown();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#course_combobox_container')) {
+                    dropdownList.classList.add('hidden');
+                }
+            });
+
+            // Expose a function to refresh options when university changes
+            window.onUniversityChange = function(univ) {
+                // If the dropdown is currently open, re-render it
+                if (!dropdownList.classList.contains('hidden')) {
+                    renderOptions(searchInput.value);
+                }
+            };
+        }
+
+        initCourseCombobox();
+        initUniversityCombobox();
+
+        // Account Number digits-only validation
+        const accountInput = document.getElementById('account_number_input');
+        if (accountInput) {
+            accountInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+        }
 
     </script>
 </x-app-layout>

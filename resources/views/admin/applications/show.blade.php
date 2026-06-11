@@ -225,13 +225,16 @@
                 <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6 border border-gray-200 dark:border-gray-700 sticky top-24">
                     <h3 class="text-lg font-bold mb-4">Review Action</h3>
                     
-                    <div class="mb-6 flex justify-center">
+                    <div class="mb-6 flex flex-col items-center">
                         <span class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold w-full text-center tracking-widest uppercase
                             {{ $application->status === 'approved' ? 'bg-green-100 text-green-800' : '' }}
                             {{ $application->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}
                             {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}">
                             {{ $application->status === 'pending' ? 'In Progress' : $application->status }}
                         </span>
+                        @if($application->status === 'approved' && $application->approved_at)
+                            <span class="text-xs text-green-600 dark:text-green-400 mt-2 font-bold">Approved on {{ $application->approved_at->format('M d, Y') }}</span>
+                        @endif
                     </div>
 
                     @if($application->amount_requested)
@@ -241,6 +244,7 @@
                     </div>
                     @endif
 
+                    @if($application->status === 'pending')
                     <form action="{{ route('admin.applications.update', $application) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -257,6 +261,7 @@
                             Update Status
                         </button>
                     </form>
+                    @endif
 
                     <!-- Payment Action Card -->
                     @if($application->status === 'approved' && !$application->payment)

@@ -30,7 +30,7 @@
                                         <th class="py-4 px-4 font-semibold text-xs uppercase tracking-wider">Transaction ID</th>
                                         <th class="py-4 px-4 font-semibold text-xs uppercase tracking-wider">Application</th>
                                         <th class="py-4 px-4 font-semibold text-xs uppercase tracking-wider">Penerima</th>
-                                        <th class="py-4 px-4 font-semibold text-xs uppercase tracking-wider">Gateway</th>
+                                        <th class="py-4 px-4 font-semibold text-xs uppercase tracking-wider">Payment Gateway</th>
                                         <th class="py-4 px-4 font-semibold text-xs uppercase tracking-wider">Kaedah</th>
                                         <th class="py-4 px-4 font-semibold text-xs uppercase tracking-wider">Jumlah</th>
                                         <th class="py-4 px-4 font-semibold text-xs uppercase tracking-wider">Status</th>

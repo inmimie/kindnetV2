@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Application extends Model
 {
     protected $fillable = [
-        'user_id', 'charity_type_id', 'amount_requested', 'status',
+        'user_id', 'charity_type_id', 'amount_requested', 'status', 'approved_at',
         'applicant_name', 'applicant_ic', 'applicant_dob', 'applicant_gender', 'applicant_marital_status',
         'applicant_address', 'applicant_phone', 'applicant_occupation', 'applicant_email',
         'father_name', 'father_occupation', 'father_income',
@@ -17,6 +17,11 @@ class Application extends Model
         'account_number', 'bank_name',
         'doc_student_ic', 'doc_student_birth_cert', 'doc_mother_ic', 'doc_father_ic', 'doc_offer_letter'
     ];
+
+    protected $casts = [
+        'approved_at' => 'datetime',
+    ];
+
     protected function applicantMaritalStatus(): \Illuminate\Database\Eloquent\Casts\Attribute
     {
         return \Illuminate\Database\Eloquent\Casts\Attribute::make(

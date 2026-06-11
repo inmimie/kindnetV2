@@ -28,12 +28,20 @@ class ApplicationController extends Controller
 
     public function update(Request $request, Application $application, SmsService $smsService)
     {
+        if (in_array($application->status, ['approved', 'rejected'])) {
+            return redirect()->route('admin.applications.show', $application)
+                ->with('error', 'Cannot update status of an application that is already approved or rejected.');
+        }
+
         $request->validate([
             'status' => 'required|in:pending,approved,rejected'
         ]);
 
         $oldStatus = $application->status;
-        $application->update(['status' => $request->status]);
+        $application->update([
+            'status' => $request->status,
+            'approved_at' => $request->status === 'approved' ? now() : null,
+        ]);
 
         if ($oldStatus !== $request->status && in_array($request->status, ['approved', 'rejected'])) {
             if ($application->user->phone_number) {

@@ -26,16 +26,6 @@ class PaymentGatewayService
                     'KFH', 'UOB',
                 ],
             ],
-            'duitnow' => [
-                'name' => 'DuitNow Transfer',
-                'description' => 'Pemindahan wang segera melalui DuitNow menggunakan nombor IC, telefon atau ID DuitNow.',
-                'icon' => 'duitnow',
-                'color' => 'pink',
-                'methods' => [
-                    'DuitNow ID', 'DuitNow QR', 'DuitNow Transfer (IC)',
-                    'DuitNow Transfer (Phone)', 'DuitNow Request',
-                ],
-            ],
             'toyyibpay' => [
                 'name' => 'ToyyibPay',
                 'description' => 'Payment gateway popular Malaysia yang menyokong FPX dan kad kredit/debit.',
@@ -52,15 +42,6 @@ class PaymentGatewayService
                 'color' => 'orange',
                 'methods' => [
                     'FPX (via Billplz)', 'Direct Debit', 'PayPal',
-                ],
-            ],
-            'bank_transfer' => [
-                'name' => 'Bank Transfer (Manual)',
-                'description' => 'Pemindahan wang manual melalui IBG/IBFT terus ke akaun bank penerima.',
-                'icon' => 'bank',
-                'color' => 'gray',
-                'methods' => [
-                    'IBG Transfer', 'IBFT (Instant Transfer)', 'Cheque', 'Cash Deposit',
                 ],
             ],
         ];

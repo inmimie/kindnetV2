@@ -138,7 +138,7 @@ class ApplicationController extends Controller
             'university_name' => 'required|string|max:255',
             'start_year' => 'required|integer|min:1900',
             'end_year' => 'required|integer|gte:start_year',
-            'account_number' => 'required|string|max:50',
+            'account_number' => 'required|string|max:16',
             'bank_name' => 'required|string|in:Maybank,CIMB Bank,Public Bank,RHB Bank,Hong Leong Bank,AmBank,Bank Islam,Bank Rakyat,BSN,Bank Muamalat,Agrobank',
             
             // Tab 4 Fields (Documents)

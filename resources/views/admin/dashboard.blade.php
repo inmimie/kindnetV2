@@ -107,7 +107,8 @@
                                         <th class="py-3.5 px-5 text-sm font-bold">Charity Type</th>
                                         <th class="py-3.5 px-5 text-sm font-bold">Requested Amount</th>
                                         <th class="py-3.5 px-5 text-sm font-bold">Status</th>
-                                        <th class="py-3.5 px-5 text-sm font-bold">Date</th>
+                                        <th class="py-3.5 px-5 text-sm font-bold">Submit Date</th>
+                                        <th class="py-3.5 px-5 text-sm font-bold">Approved Date</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -150,6 +151,15 @@
                                             <!-- Submission Date -->
                                             <td class="py-4 px-5 text-sm text-gray-500 dark:text-gray-400 font-medium">
                                                 {{ $app->created_at->format('M d, Y') }}
+                                            </td>
+
+                                            <!-- Approval Date -->
+                                            <td class="py-4 px-5 text-sm text-gray-500 dark:text-gray-400 font-medium">
+                                                @if($app->status === 'approved' && $app->approved_at)
+                                                    {{ $app->approved_at->format('M d, Y') }}
+                                                @else
+                                                    <span class="text-gray-400 dark:text-gray-500 italic">-</span>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

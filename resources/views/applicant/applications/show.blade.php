@@ -13,15 +13,18 @@
                 <div class="flex justify-between items-start mb-6 border-b pb-4 dark:border-gray-700">
                     <div>
                         <h3 class="text-2xl font-bold">{{ $application->user->name }}'s Application</h3>
-                        <p class="text-gray-500 text-sm mt-1">Submitted on {{ $application->created_at->format('M d, Y h:i A') }}</p>
+                        <p class="text-gray-500 text-sm mt-1">Submitted on {{ $application->created_at->format('M d, Y') }}</p>
                     </div>
-                    <div>
+                    <div class="text-right">
                         <span class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider
                             {{ $application->status === 'approved' ? 'bg-green-100 text-green-800' : '' }}
                             {{ $application->status === 'rejected' ? 'bg-red-100 text-red-800' : '' }}
                             {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}">
                             {{ $application->status === 'pending' ? 'In Progress' : $application->status }}
                         </span>
+                        @if($application->status === 'approved' && $application->approved_at)
+                            <p class="text-xs text-green-600 dark:text-green-400 mt-2 font-bold">Approved on {{ $application->approved_at->format('M d, Y') }}</p>
+                        @endif
                     </div>
                 </div>
 
@@ -111,11 +114,8 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-lg border border-indigo-100 dark:border-indigo-800 mb-8 flex justify-around">
-
                 <!-- Documents Details -->
-                <h3 class="text-lg font-bold text-indigo-700 dark:text-indigo-400 mb-4 border-b border-gray-100 dark:border-gray-700 pb-2">Dokumen Sokongan (Supporting Documents)</h3>
+                <h3 class="text-lg font-bold text-indigo-700 dark:text-indigo-400 mb-4 border-b border-gray-100 dark:border-gray-700 pb-2">Supporting Documents</h3>
                 <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
                     <ul class="space-y-3">
                         <li class="flex items-center justify-between">

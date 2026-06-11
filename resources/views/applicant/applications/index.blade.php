@@ -31,7 +31,8 @@
                                     <tr class="border-b dark:border-gray-700 text-gray-700 dark:text-gray-300">
                                         <th class="py-4 px-6 font-semibold">Type</th>
                                         <th class="py-4 px-6 font-semibold">Status</th>
-                                        <th class="py-4 px-6 font-semibold">Date</th>
+                                        <th class="py-4 px-6 font-semibold">Submit Date</th>
+                                        <th class="py-4 px-6 font-semibold">Approved Date</th>
                                         <th class="py-4 px-6 font-semibold text-right">Action</th>
                                     </tr>
                                 </thead>
@@ -48,6 +49,13 @@
                                                 </span>
                                             </td>
                                             <td class="py-4 px-6 text-gray-500">{{ $app->created_at->format('M d, Y') }}</td>
+                                            <td class="py-4 px-6 text-gray-500">
+                                                @if($app->status === 'approved' && $app->approved_at)
+                                                    {{ $app->approved_at->format('M d, Y') }}
+                                                @else
+                                                    <span class="text-gray-400 italic text-sm">-</span>
+                                                @endif
+                                            </td>
                                             <td class="py-4 px-6 text-right space-x-2">
                                                 <a href="{{ route('applicant.applications.show', $app) }}" class="text-indigo-600 hover:text-indigo-400 font-medium transition">View</a>
                                                 @if($app->status === 'pending')

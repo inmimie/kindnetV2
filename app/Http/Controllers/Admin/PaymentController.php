@@ -39,7 +39,7 @@ class PaymentController extends Controller
         $request->validate([
             'application_id' => 'required|exists:applications,id',
             'amount' => 'required|numeric|min:1',
-            'payment_gateway' => 'required|string|in:fpx,duitnow,toyyibpay,billplz,bank_transfer',
+            'payment_gateway' => 'required|string|in:fpx,toyyibpay,billplz',
             'payment_method' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:1000',
         ]);
