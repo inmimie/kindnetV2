@@ -94,9 +94,14 @@
                     </div>
                 </div>
 
-                <!-- Education & Banking Details -->
-                <h3 class="text-lg font-bold text-indigo-700 dark:text-indigo-400 mb-4 border-b border-gray-100 dark:border-gray-700 pb-2">Education & Banking Information</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                <!-- Education & Banking Details -->
+                @php
+                    $isMedical = $application->charityType && $application->charityType->name === 'Medical Support';
+                    $isLiving = $application->charityType && $application->charityType->name === 'Living Allowance';
+                @endphp
+                <h3 class="text-lg font-bold text-indigo-700 dark:text-indigo-400 mb-4 border-b border-gray-100 dark:border-gray-700 pb-2">{{ ($isMedical || $isLiving) ? 'Banking Information' : 'Education & Banking Information' }}</h3>
+                <div class="grid grid-cols-1 {{ ($isMedical || $isLiving) ? 'md:grid-cols-1' : 'md:grid-cols-2' }} gap-6 mb-8">
+                    @if(!$isMedical && !$isLiving)
                     <div class="border border-blue-200 dark:border-blue-800 rounded p-4 bg-blue-50 dark:bg-blue-900/20">
                         <h4 class="font-bold mb-3 text-blue-900 dark:text-blue-200">Education Details</h4>
                         <div class="space-y-2 text-sm">
@@ -106,6 +111,7 @@
                             <p><span class="text-gray-500 block text-xs">Duration</span> <span class="font-medium">{{ $application->start_year }} - {{ $application->end_year }}</span></p>
                         </div>
                     </div>
+                    @endif
                     <div class="border border-green-200 dark:border-green-800 rounded p-4 bg-green-50 dark:bg-green-900/20">
                         <h4 class="font-bold mb-3 text-green-900 dark:text-green-200">Banking Details</h4>
                         <div class="space-y-2 text-sm">
@@ -118,46 +124,130 @@
                 <h3 class="text-lg font-bold text-indigo-700 dark:text-indigo-400 mb-4 border-b border-gray-100 dark:border-gray-700 pb-2">Supporting Documents</h3>
                 <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
                     <ul class="space-y-3">
-                        <li class="flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1. Salinan Kad Pengenalan Pelajar</span>
-                            @if($application->doc_student_ic)
-                                <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
-                            @else
-                                <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
-                            @endif
-                        </li>
-                        <li class="flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">2. Salinan Sijil Lahir Pelajar</span>
-                            @if($application->doc_student_birth_cert)
-                                <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
-                            @else
-                                <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
-                            @endif
-                        </li>
-                        <li class="flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">3. Salinan Kad Pengenalan Ibu</span>
-                            @if($application->doc_mother_ic)
-                                <a href="{{ Storage::url($application->doc_mother_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
-                            @else
-                                <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
-                            @endif
-                        </li>
-                        <li class="flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4. Salinan Kad Pengenalan Bapa</span>
-                            @if($application->doc_father_ic)
-                                <a href="{{ Storage::url($application->doc_father_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
-                            @else
-                                <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
-                            @endif
-                        </li>
-                        <li class="flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">5. Salinan Surat Tawaran IPT</span>
-                            @if($application->doc_offer_letter)
-                                <a href="{{ Storage::url($application->doc_offer_letter) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
-                            @else
-                                <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
-                            @endif
-                        </li>
+                        @if($isMedical)
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1. Applicant IC Copy</span>
+                                @if($application->doc_student_ic)
+                                    <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">2. Applicant Birth Certificate Copy</span>
+                                @if($application->doc_student_birth_cert)
+                                    <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">3. Copy of salary slip</span>
+                                @if($application->doc_salary_slip)
+                                    <a href="{{ Storage::url($application->doc_salary_slip) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4. Copy of marriage certificate</span>
+                                @if($application->doc_marriage_cert)
+                                    <a href="{{ Storage::url($application->doc_marriage_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">5. Hospital medical report</span>
+                                @if($application->doc_medical_report)
+                                    <a href="{{ Storage::url($application->doc_medical_report) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">6. Price quotes from pharmacies</span>
+                                @if($application->doc_pharmacy_quote)
+                                    <a href="{{ Storage::url($application->doc_pharmacy_quote) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                        @elseif($isLiving)
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1. Applicant IC Copy</span>
+                                @if($application->doc_student_ic)
+                                    <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">2. Applicant Birth Certificate Copy</span>
+                                @if($application->doc_student_birth_cert)
+                                    <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">3. Bank account statement slip</span>
+                                @if($application->doc_bank_statement)
+                                    <a href="{{ Storage::url($application->doc_bank_statement) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4. Copy of salary slip</span>
+                                @if($application->doc_salary_slip)
+                                    <a href="{{ Storage::url($application->doc_salary_slip) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                        @else
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1. Salinan Kad Pengenalan Pelajar</span>
+                                @if($application->doc_student_ic)
+                                    <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">2. Salinan Sijil Lahir Pelajar</span>
+                                @if($application->doc_student_birth_cert)
+                                    <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">3. Salinan Kad Pengenalan Ibu</span>
+                                @if($application->doc_mother_ic)
+                                    <a href="{{ Storage::url($application->doc_mother_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4. Salinan Kad Pengenalan Bapa</span>
+                                @if($application->doc_father_ic)
+                                    <a href="{{ Storage::url($application->doc_father_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">5. Salinan Surat Tawaran IPT</span>
+                                @if($application->doc_offer_letter)
+                                    <a href="{{ Storage::url($application->doc_offer_letter) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Muat Turun / Lihat</a>
+                                @else
+                                    <span class="text-sm text-red-500 italic">Tiada Dokumen</span>
+                                @endif
+                            </li>
+                        @endif
                     </ul>
                 </div>
 

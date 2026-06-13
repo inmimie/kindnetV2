@@ -1,3 +1,8 @@
+@php
+    $isMedical = isset($selectedCharityType) && $selectedCharityType && $selectedCharityType->name === 'Medical Support';
+    $isLiving = isset($selectedCharityType) && $selectedCharityType && $selectedCharityType->name === 'Living Allowance';
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -33,7 +38,7 @@
                                 2. Parent/Guardian
                             </button>
                             <button type="button" id="btn-tab-3" class="whitespace-nowrap px-4 py-3 text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none" onclick="switchTab(3)">
-                                3. Education & Bank
+                                {{ ($isMedical || $isLiving) ? '3. Banking Info' : '3. Education & Bank' }}
                             </button>
                             <button type="button" id="btn-tab-4" class="whitespace-nowrap px-4 py-3 text-sm font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none" onclick="switchTab(4)">
                                 4. Documents
@@ -135,7 +140,8 @@
                             
                             
 
-                            <div class="mt-6 flex items-center justify-end">
+                            <div class="mt-6 flex items-center justify-between">
+                                <a href="{{ route('applicant.applications.index') }}" class="px-6 py-2 bg-white text-gray-700 border border-gray-300 font-semibold rounded hover:bg-gray-50 transition shadow-sm">&larr; Back</a>
                                 <button type="button" onclick="switchTab(2)" class="px-6 py-2 bg-gray-800 text-white font-semibold rounded hover:bg-gray-700 transition shadow">Next &rarr;</button>
                             </div>
                         </div>
@@ -257,8 +263,9 @@
 
                         <!-- TAB 3: Education & Bank Info -->
                         <div id="tab-3" class="hidden">
-                            <h3 class="text-lg font-bold mb-4 text-indigo-900 dark:text-indigo-300">Education & Banking Information</h3>
+                            <h3 class="text-lg font-bold mb-4 text-indigo-900 dark:text-indigo-300">{{ ($isMedical || $isLiving) ? 'Banking Information' : 'Education & Banking Information' }}</h3>
 
+                            @if(!$isMedical && !$isLiving)
                             <!-- Education -->
                             <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl mb-6 border border-blue-200 dark:border-blue-800">
                                 <h4 class="font-bold text-blue-900 dark:text-blue-200 mb-3 border-b border-blue-200 dark:border-blue-800 pb-2">Education Information</h4>
@@ -267,7 +274,7 @@
                                      <div class="md:col-span-2 relative" id="university_combobox_container">
                                          <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">University Name *</label>
                                          <div class="relative mt-1">
-                                             <input type="text" id="university_search_input" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm pr-10 focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="Search or type university name..." autocomplete="off" required>
+                                             <input type="text" id="university_search_input" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm pr-10 focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="Search or type university name..." autocomplete="off" {{ !$isMedical ? 'required' : '' }}>
                                              <button type="button" id="university_toggle_btn" class="absolute inset-y-0 right-0 flex items-center pr-3">
                                                  <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
                                                      <path d="M7 10l5 5 5-5H7z" fill="currentColor"/>
@@ -283,7 +290,7 @@
                                     <div class="relative" id="course_combobox_container">
                                          <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Course Name *</label>
                                          <div class="relative mt-1">
-                                             <input type="text" id="course_search_input" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm pr-10 focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="Search or type course name..." autocomplete="off" required>
+                                             <input type="text" id="course_search_input" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm pr-10 focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="Search or type course name..." autocomplete="off" {{ !$isMedical ? 'required' : '' }}>
                                              <button type="button" id="course_toggle_btn" class="absolute inset-y-0 right-0 flex items-center pr-3">
                                                  <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
                                                      <path d="M7 10l5 5 5-5H7z" fill="currentColor"/>
@@ -298,7 +305,7 @@
                                      </div>
                                     <div>
                                         <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Level of Study *</label>
-                                        <select name="study_level" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                        <select name="study_level" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" {{ !$isMedical ? 'required' : '' }}>
                                             <option value="">Select Level</option>
                                             <option value="Sijil" {{ old('study_level', $application->study_level) == 'Sijil' ? 'selected' : '' }}>Certificate</option>
                                             <option value="Diploma" {{ old('study_level', $application->study_level) == 'Diploma' ? 'selected' : '' }}>Diploma</option>
@@ -311,14 +318,15 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">Start Year *</label>
-                                        <input type="number" name="start_year" value="{{ old('start_year', $application->start_year) }}" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                        <input type="number" name="start_year" value="{{ old('start_year', $application->start_year) }}" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" {{ !$isMedical ? 'required' : '' }}>
                                     </div>
                                     <div>
                                         <label class="block font-medium text-sm text-blue-800 dark:text-blue-300">End Year *</label>
-                                        <input type="number" name="end_year" value="{{ old('end_year', $application->end_year) }}" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" required>
+                                        <input type="number" name="end_year" value="{{ old('end_year', $application->end_year) }}" placeholder="YYYY" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 shadow-sm" {{ !$isMedical ? 'required' : '' }}>
                                     </div>
                                 </div>
                             </div>
+                            @endif
 
                             <!-- Bank -->
                             <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl mb-6 border border-green-200 dark:border-green-800">
@@ -376,6 +384,51 @@
                                         @endif
                                         <input type="file" name="doc_student_birth_cert" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
                                     </div>
+                                    @if($isMedical)
+                                    <div>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">3. Copy of salary slip</label>
+                                        @if($application->doc_salary_slip)
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_salary_slip) }}" target="_blank" class="underline">View Document</a></p>
+                                        @endif
+                                        <input type="file" name="doc_salary_slip" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">4. Copy of marriage certificate</label>
+                                        @if($application->doc_marriage_cert)
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_marriage_cert) }}" target="_blank" class="underline">View Document</a></p>
+                                        @endif
+                                        <input type="file" name="doc_marriage_cert" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">5. Hospital medical report</label>
+                                        @if($application->doc_medical_report)
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_medical_report) }}" target="_blank" class="underline">View Document</a></p>
+                                        @endif
+                                        <input type="file" name="doc_medical_report" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">6. Price quotes from pharmacies</label>
+                                        @if($application->doc_pharmacy_quote)
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_pharmacy_quote) }}" target="_blank" class="underline">View Document</a></p>
+                                        @endif
+                                        <input type="file" name="doc_pharmacy_quote" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
+                                    </div>
+                                    @elseif($isLiving)
+                                    <div>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">3. Bank account statement slip</label>
+                                        @if($application->doc_bank_statement)
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_bank_statement) }}" target="_blank" class="underline">View Document</a></p>
+                                        @endif
+                                        <input type="file" name="doc_bank_statement" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">4. Copy of salary slip</label>
+                                        @if($application->doc_salary_slip)
+                                            <p class="text-sm text-green-600 mb-1">&check; Existing document: <a href="{{ Storage::url($application->doc_salary_slip) }}" target="_blank" class="underline">View Document</a></p>
+                                        @endif
+                                        <input type="file" name="doc_salary_slip" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
+                                    </div>
+                                    @else
                                     <div>
                                         <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">3. Mother's IC Copy</label>
                                         @if($application->doc_mother_ic)
@@ -397,6 +450,7 @@
                                         @endif
                                         <input type="file" name="doc_offer_letter" accept=".pdf,.jpg,.jpeg,.png" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:text-gray-400 dark:file:bg-indigo-900/50 dark:file:text-indigo-300">
                                     </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -481,8 +535,9 @@
             window.scrollTo(0, 0);
         }
 
+        // Show correct tab on backend validation failure
         @if($errors->any())
-            @if($errors->has('doc_student_ic') || $errors->has('doc_student_birth_cert') || $errors->has('doc_mother_ic') || $errors->has('doc_father_ic') || $errors->has('doc_offer_letter'))
+            @if($errors->has('doc_student_ic') || $errors->has('doc_student_birth_cert') || $errors->has('doc_mother_ic') || $errors->has('doc_father_ic') || $errors->has('doc_offer_letter') || $errors->has('doc_salary_slip') || $errors->has('doc_marriage_cert') || $errors->has('doc_medical_report') || $errors->has('doc_pharmacy_quote') || $errors->has('doc_bank_statement'))
                 switchTab(4);
             @elseif($errors->has('course_name') || $errors->has('bank_name') || $errors->has('account_number'))
                 switchTab(3);

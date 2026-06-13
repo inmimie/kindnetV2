@@ -99,13 +99,18 @@
                     </div>
                 </div>
 
+                @php
+                    $isMedical = $application->charityType && $application->charityType->name === 'Medical Support';
+                    $isLiving = $application->charityType && $application->charityType->name === 'Living Allowance';
+                @endphp
                 <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
                     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 border-l-4 border-l-blue-500">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100">Education & Banking Information</h3>
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100">{{ ($isMedical || $isLiving) ? 'Banking Information' : 'Education & Banking Information' }}</h3>
                     </div>
                     <div class="p-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 {{ ($isMedical || $isLiving) ? 'sm:grid-cols-1' : 'sm:grid-cols-2' }} gap-6">
                             <!-- Education -->
+                            @if(!$isMedical && !$isLiving)
                             <div class="border rounded p-4 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
                                 <h4 class="font-bold mb-3 border-b border-blue-200 dark:border-blue-800 pb-2 text-blue-900 dark:text-blue-200">Education Details</h4>
                                 <table class="w-full text-sm">
@@ -115,6 +120,7 @@
                                     <tr><td class="text-gray-500 py-1">Duration:</td><td class="font-medium">{{ $application->start_year }} - {{ $application->end_year }}</td></tr>
                                 </table>
                             </div>
+                            @endif
                             <!-- Bank -->
                             <div class="border rounded p-4 dark:border-gray-700 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
                                 <h4 class="font-bold mb-3 border-b border-green-200 dark:border-green-800 pb-2 text-green-900 dark:text-green-200">Banking Details</h4>
@@ -133,46 +139,130 @@
                     </div>
                     <div class="p-6">
                         <ul class="space-y-4">
-                            <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1. Applicant IC (Salinan Kad Pengenalan Pelajar)</span>
-                                @if($application->doc_student_ic)
-                                    <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
-                                @else
-                                    <span class="text-sm text-red-500 italic">No Document</span>
-                                @endif
-                            </li>
-                            <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">2. Applicant Birth Cert (Salinan Sijil Lahir Pelajar)</span>
-                                @if($application->doc_student_birth_cert)
-                                    <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
-                                @else
-                                    <span class="text-sm text-red-500 italic">No Document</span>
-                                @endif
-                            </li>
-                            <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">3. Mother's IC (Salinan Kad Pengenalan Ibu)</span>
-                                @if($application->doc_mother_ic)
-                                    <a href="{{ Storage::url($application->doc_mother_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
-                                @else
-                                    <span class="text-sm text-red-500 italic">No Document</span>
-                                @endif
-                            </li>
-                            <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4. Father's IC (Salinan Kad Pengenalan Bapa)</span>
-                                @if($application->doc_father_ic)
-                                    <a href="{{ Storage::url($application->doc_father_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
-                                @else
-                                    <span class="text-sm text-red-500 italic">No Document</span>
-                                @endif
-                            </li>
-                            <li class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">5. IPT Offer Letter (Salinan Surat Tawaran IPT)</span>
-                                @if($application->doc_offer_letter)
-                                    <a href="{{ Storage::url($application->doc_offer_letter) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
-                                @else
-                                    <span class="text-sm text-red-500 italic">No Document</span>
-                                @endif
-                            </li>
+                            @if($isMedical)
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1. Applicant IC (Applicant IC Copy)</span>
+                                    @if($application->doc_student_ic)
+                                        <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">2. Applicant Birth Cert (Applicant Birth Certificate Copy)</span>
+                                    @if($application->doc_student_birth_cert)
+                                        <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">3. Salary Slip (Copy of salary slip)</span>
+                                    @if($application->doc_salary_slip)
+                                        <a href="{{ Storage::url($application->doc_salary_slip) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4. Marriage Certificate (Copy of marriage certificate)</span>
+                                    @if($application->doc_marriage_cert)
+                                        <a href="{{ Storage::url($application->doc_marriage_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">5. Medical Report (Hospital medical report)</span>
+                                    @if($application->doc_medical_report)
+                                        <a href="{{ Storage::url($application->doc_medical_report) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">6. Pharmacy Quotes (Price quotes from pharmacies)</span>
+                                    @if($application->doc_pharmacy_quote)
+                                        <a href="{{ Storage::url($application->doc_pharmacy_quote) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                            @elseif($isLiving)
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1. Applicant IC (Applicant IC Copy)</span>
+                                    @if($application->doc_student_ic)
+                                        <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">2. Applicant Birth Cert (Applicant Birth Certificate Copy)</span>
+                                    @if($application->doc_student_birth_cert)
+                                        <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">3. Bank Statement (Bank account statement slip)</span>
+                                    @if($application->doc_bank_statement)
+                                        <a href="{{ Storage::url($application->doc_bank_statement) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4. Salary Slip (Copy of salary slip)</span>
+                                    @if($application->doc_salary_slip)
+                                        <a href="{{ Storage::url($application->doc_salary_slip) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                            @else
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">1. Applicant IC (Salinan Kad Pengenalan Pelajar)</span>
+                                    @if($application->doc_student_ic)
+                                        <a href="{{ Storage::url($application->doc_student_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">2. Applicant Birth Cert (Salinan Sijil Lahir Pelajar)</span>
+                                    @if($application->doc_student_birth_cert)
+                                        <a href="{{ Storage::url($application->doc_student_birth_cert) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">3. Mother's IC (Salinan Kad Pengenalan Ibu)</span>
+                                    @if($application->doc_mother_ic)
+                                        <a href="{{ Storage::url($application->doc_mother_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between border-b pb-2 dark:border-gray-700">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">4. Father's IC (Salinan Kad Pengenalan Bapa)</span>
+                                    @if($application->doc_father_ic)
+                                        <a href="{{ Storage::url($application->doc_father_ic) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">5. IPT Offer Letter (Salinan Surat Tawaran IPT)</span>
+                                    @if($application->doc_offer_letter)
+                                        <a href="{{ Storage::url($application->doc_offer_letter) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-800 font-bold underline">Download / View</a>
+                                    @else
+                                        <span class="text-sm text-red-500 italic">No Document</span>
+                                    @endif
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>

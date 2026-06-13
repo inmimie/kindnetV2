@@ -15,7 +15,8 @@ class Application extends Model
         'total_dependents', 'total_income',
         'course_name', 'study_level', 'university_name', 'start_year', 'end_year',
         'account_number', 'bank_name',
-        'doc_student_ic', 'doc_student_birth_cert', 'doc_mother_ic', 'doc_father_ic', 'doc_offer_letter'
+        'doc_student_ic', 'doc_student_birth_cert', 'doc_mother_ic', 'doc_father_ic', 'doc_offer_letter',
+        'doc_salary_slip', 'doc_marriage_cert', 'doc_medical_report', 'doc_pharmacy_quote', 'doc_bank_statement'
     ];
 
     protected $casts = [
