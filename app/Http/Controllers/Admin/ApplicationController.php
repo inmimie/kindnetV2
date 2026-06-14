@@ -9,10 +9,45 @@ use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $applications = Application::with(['user', 'charityType'])->latest()->get();
-        return view('admin.applications.index', compact('applications'));
+        $query = Application::with(['user', 'charityType'])
+            ->where('status', '!=', 'rejected');
+
+        // Search Filter
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('applicant_name', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($userQuery) use ($search) {
+                      $userQuery->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Status Filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        // Charity Type Filter
+        if ($request->filled('charity_type_id')) {
+            $query->where('charity_type_id', $request->input('charity_type_id'));
+        }
+
+        // Sort Filter
+        $sort = $request->input('sort', 'latest');
+        if ($sort === 'oldest') {
+            $query->oldest();
+        } else {
+            $query->latest();
+        }
+
+        $applications = $query->get();
+        $charityTypes = \App\Models\CharityType::all();
+
+        return view('admin.applications.index', compact('applications', 'charityTypes'));
     }
 
     public function show(Application $application)

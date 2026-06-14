@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\CharityType;
 use Illuminate\Http\Request;
+use App\Services\SmsService;
 
 class ApplicationController extends Controller
 {
@@ -62,7 +63,21 @@ class ApplicationController extends Controller
             }
         }
 
-        auth()->user()->applications()->create($validated);
+        // Auto qualification filter
+        if ($validated['total_income'] > 5000) {
+            $validated['status'] = 'rejected';
+        } else {
+            $validated['status'] = 'pending';
+        }
+
+        $application = auth()->user()->applications()->create($validated);
+
+        if ($application->status === 'rejected' && auth()->user()->phone_number) {
+            app(SmsService::class)->sendSms(
+                auth()->user()->phone_number,
+                "Your charity application #{$application->id} has been automatically rejected as household income exceeds the B40 threshold."
+            );
+        }
 
         return redirect()->route('applicant.applications.index')->with('success', 'Application submitted successfully.');
     }
@@ -98,7 +113,21 @@ class ApplicationController extends Controller
 
         $this->handleFileUploads($request, $validated);
 
+        // Auto qualification filter
+        if ($validated['total_income'] > 5000) {
+            $validated['status'] = 'rejected';
+        } else {
+            $validated['status'] = 'pending';
+        }
+
         $application->update($validated);
+
+        if ($application->status === 'rejected' && auth()->user()->phone_number) {
+            app(SmsService::class)->sendSms(
+                auth()->user()->phone_number,
+                "Your charity application #{$application->id} has been automatically rejected as household income exceeds the B40 threshold."
+            );
+        }
 
         return redirect()->route('applicant.applications.index')->with('success', 'Application updated successfully.');
     }
