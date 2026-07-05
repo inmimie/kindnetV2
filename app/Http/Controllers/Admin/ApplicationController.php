@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Notifications\ApplicationApprovedNotification;
-use App\Services\SmsService;
 use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
@@ -62,7 +61,7 @@ class ApplicationController extends Controller
         return view('admin.applications.edit', compact('application'));
     }
 
-    public function update(Request $request, Application $application, SmsService $smsService)
+    public function update(Request $request, Application $application)
     {
         if (in_array($application->status, ['approved', 'rejected'])) {
             return redirect()->route('admin.applications.show', $application)
@@ -80,13 +79,6 @@ class ApplicationController extends Controller
         ]);
 
         if ($oldStatus !== $request->status && in_array($request->status, ['approved', 'rejected'])) {
-            if ($application->user->phone_number) {
-                $smsService->sendSms(
-                    $application->user->phone_number, 
-                    "Your charity application #{$application->id} has been {$request->status}."
-                );
-            }
-
             if ($request->status === 'approved') {
                 $application->user->notify(new ApplicationApprovedNotification($application));
             }

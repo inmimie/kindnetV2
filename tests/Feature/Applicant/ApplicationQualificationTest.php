@@ -71,13 +71,8 @@ test('application with total income <= 5000 is pending', function () {
     expect($application->status)->toBe('pending');
 });
 
-test('application with total income > 5000 is automatically rejected and triggers SMS', function () {
+test('application with total income > 5000 is automatically rejected', function () {
     Storage::fake('public');
-    Log::shouldReceive('info')
-        ->once()
-        ->withArgs(function ($message) {
-            return str_contains($message, 'MOCK SMS to +60123456789:') && str_contains($message, 'automatically rejected');
-        });
 
     $studentIc = UploadedFile::fake()->create('ic.pdf', 100);
     $birthCert = UploadedFile::fake()->create('birth.pdf', 100);
