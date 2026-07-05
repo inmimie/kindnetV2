@@ -17,6 +17,13 @@
             } else {
                 document.documentElement.classList.remove('dark');
             }
+
+            // Force reload when navigated to via browser back button (BF Cache)
+            window.addEventListener('pageshow', function (event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            });
         </script>
 
         <style>

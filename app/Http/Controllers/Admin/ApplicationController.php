@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Notifications\ApplicationApprovedNotification;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
 
@@ -84,6 +85,10 @@ class ApplicationController extends Controller
                     $application->user->phone_number, 
                     "Your charity application #{$application->id} has been {$request->status}."
                 );
+            }
+
+            if ($request->status === 'approved') {
+                $application->user->notify(new ApplicationApprovedNotification($application));
             }
         }
 

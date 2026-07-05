@@ -6,7 +6,14 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\Applicant;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return response()
+        ->view('welcome')
+        ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        ->header('Pragma', 'no-cache')
+        ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
 });
 
 Route::get('/dashboard', function () {
@@ -37,6 +44,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 Route::middleware(['auth', 'verified', 'role:applicant'])->prefix('applicant')->name('applicant.')->group(function () {
     Route::get('/dashboard', [Applicant\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('applications', Applicant\ApplicationController::class);
+
+    // Notifications
+    Route::get('/notifications', [Applicant\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/unread-count', [Applicant\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
+    Route::post('/notifications/{id}/read', [Applicant\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [Applicant\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
 });
 
 require __DIR__.'/auth.php';
