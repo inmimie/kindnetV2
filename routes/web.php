@@ -53,12 +53,3 @@ Route::middleware(['auth', 'verified', 'role:applicant'])->prefix('applicant')->
 });
 
 require __DIR__.'/auth.php';
-
-Route::get('/debug-db', function () {
-    try {
-        \DB::connection()->getPdo();
-        return "Database connection is successful!";
-    } catch (\Exception $e) {
-        return "Database Connection Failed: " . $e->getMessage();
-    }
-});
