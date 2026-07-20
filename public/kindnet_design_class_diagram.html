@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KindNet V2 - Design Class Diagram</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f5f0;
+    overflow: auto;
+    cursor: grab;
+  }
+  body.grabbing { cursor: grabbing; }
+
+  #canvas {
+    position: relative;
+    width: 4800px;
+    height: 3800px;
+  }
+
+  /* UML Class Box */
+  .uml-class {
+    position: absolute;
+    border: 1.5px solid #888;
+    background: #fff;
+    font-size: 10px;
+    min-width: 140px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+  }
+  .uml-class .header {
+    padding: 3px 6px;
+    text-align: center;
+    border-bottom: 1px solid #888;
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 1.3;
+  }
+  .uml-class .header .stereotype {
+    font-weight: normal;
+    font-style: italic;
+    font-size: 9px;
+    color: #555;
+  }
+  .uml-class .section {
+    padding: 3px 6px;
+    border-bottom: 1px solid #ccc;
+    font-size: 9px;
+    line-height: 1.4;
+  }
+  .uml-class .section:last-child {
+    border-bottom: none;
+  }
+  .uml-class .section div {
+    white-space: nowrap;
+  }
+
+  /* Color coding like the example */
+  .color-controller .header { background: #ffffcc; }
+  .color-model .header { background: #ccffcc; }
+  .color-view .header { background: #ffcccc; }
+  .color-middleware .header { background: #e6ccff; }
+  .color-service .header { background: #ffe0b2; }
+  .color-mail .header { background: #ffcce5; }
+  .color-notification .header { background: #cce5ff; }
+  .color-request .header { background: #e0f7fa; }
+
+  /* SVG lines */
+  #lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .uml-class { z-index: 1; }
+
+  /* Legend */
+  #legend {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #fff;
+    border: 1px solid #888;
+    padding: 10px;
+    font-size: 10px;
+    z-index: 100;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  }
+  #legend h4 { margin-bottom: 6px; font-size: 11px; }
+  #legend .item { display: flex; align-items: center; margin: 3px 0; }
+  #legend .swatch {
+    width: 16px; height: 12px;
+    border: 1px solid #888;
+    margin-right: 6px;
+    display: inline-block;
+  }
+
+  /* Title */
+  #title {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: #fff;
+    border: 1px solid #888;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 100;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  }
+</style>
+</head>
+<body>
+
+<div id="title">KindNet V2 — Design Class Diagram</div>
+
+<div id="legend">
+  <h4>Legend</h4>
+  <div class="item"><span class="swatch" style="background:#ffffcc"></span> Controller</div>
+  <div class="item"><span class="swatch" style="background:#ccffcc"></span> Model (Entity)</div>
+  <div class="item"><span class="swatch" style="background:#ffcccc"></span> View (Blade)</div>
+  <div class="item"><span class="swatch" style="background:#e6ccff"></span> Middleware</div>
+  <div class="item"><span class="swatch" style="background:#ffe0b2"></span> Service</div>
+  <div class="item"><span class="swatch" style="background:#ffcce5"></span> Mail</div>
+  <div class="item"><span class="swatch" style="background:#cce5ff"></span> Notification</div>
+  <div class="item"><span class="swatch" style="background:#e0f7fa"></span> Form Request</div>
+</div>
+
+<div id="canvas">
+<svg id="lines" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Aggregation (open diamond) -->
+    <marker id="diamond" viewBox="0 0 12 8" refX="12" refY="4" markerWidth="12" markerHeight="8" orient="auto">
+      <polygon points="0,4 6,0 12,4 6,8" fill="#fff" stroke="#555" stroke-width="1"/>
+    </marker>
+    <!-- Composition (filled diamond) -->
+    <marker id="diamond-filled" viewBox="0 0 12 8" refX="12" refY="4" markerWidth="12" markerHeight="8" orient="auto">
+      <polygon points="0,4 6,0 12,4 6,8" fill="#555" stroke="#555" stroke-width="1"/>
+    </marker>
+    <!-- Arrow (navigability) -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#555" stroke-width="1.5"/>
+    </marker>
+    <!-- Triangle (inheritance) -->
+    <marker id="triangle" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <polygon points="0,0 10,5 0,10" fill="#fff" stroke="#555" stroke-width="1"/>
+    </marker>
+    <!-- Dashed arrow (dependency) -->
+    <marker id="arrow-open" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#888" stroke-width="1.5"/>
+    </marker>
+  </defs>
+</svg>
+
+<!-- ======================= MODELS (Center Row) ======================= -->
+
+<!-- User Model -->
+<div class="uml-class color-model" id="User" style="left:580px;top:1120px;min-width:200px;">
+  <div class="header">
+    <div class="stereotype">&laquo;model&raquo;</div>
+    User
+  </div>
+  <div class="section">
+    <div>- id: int</div>
+    <div>- name: string</div>
+    <div>- email: string</div>
+    <div>- password: string</div>
+    <div>- role: string</div>
+    <div>- phone_number: string</div>
+    <div>- ic_type: string</div>
+    <div>- ic_number: string</div>
+    <div>- date_of_birth: date</div>
+    <div>- place_of_birth: string</div>
+    <div>- marital_status: string</div>
+    <div>- race: string</div>
+    <div>- religion: string</div>
+    <div>- citizen: string</div>
+    <div>- address_line1: string</div>
+    <div>- address_line2: string</div>
+    <div>- address_line3: string</div>
+    <div>- city: string</div>
+    <div>- postcode: string</div>
+    <div>- district: string</div>
+    <div>- state_nation: string</div>
+    <div>- phone_home: string</div>
+    <div>- gender: string</div>
+    <div>- profile_picture: string</div>
+    <div>- remember_token: string</div>
+    <div>- email_verified_at: datetime</div>
+  </div>
+  <div class="section">
+    <div>+ applications(): HasMany</div>
+    <div>+ maritalStatus(): Attribute</div>
+    <div>+ casts(): array</div>
+  </div>
+</div>
+
+<!-- Application Model -->
+<div class="uml-class color-model" id="Application" style="left:1100px;top:1120px;min-width:220px;">
+  <div class="header">
+    <div class="stereotype">&laquo;model&raquo;</div>
+    Application
+  </div>
+  <div class="section">
+    <div>- id: int</div>
+    <div>- user_id: int (FK)</div>
+    <div>- charity_type_id: int (FK)</div>
+    <div>- amount_requested: decimal</div>
+    <div>- status: string</div>
+    <div>- approved_at: datetime</div>
+    <div>- applicant_name: string</div>
+    <div>- applicant_ic: string</div>
+    <div>- applicant_dob: date</div>
+    <div>- applicant_gender: string</div>
+    <div>- applicant_marital_status: string</div>
+    <div>- applicant_address: string</div>
+    <div>- applicant_phone: string</div>
+    <div>- applicant_occupation: string</div>
+    <div>- applicant_email: string</div>
+    <div>- father_name: string</div>
+    <div>- father_occupation: string</div>
+    <div>- father_income: decimal</div>
+    <div>- mother_name: string</div>
+    <div>- mother_occupation: string</div>
+    <div>- mother_income: decimal</div>
+    <div>- total_dependents: int</div>
+    <div>- total_income: decimal</div>
+    <div>- course_name: string</div>
+    <div>- study_level: string</div>
+    <div>- university_name: string</div>
+    <div>- start_year: int</div>
+    <div>- end_year: int</div>
+    <div>- account_number: string</div>
+    <div>- bank_name: string</div>
+    <div>- doc_student_ic: string</div>
+    <div>- doc_student_birth_cert: string</div>
+    <div>- doc_mother_ic: string</div>
+    <div>- doc_father_ic: string</div>
+    <div>- doc_offer_letter: string</div>
+    <div>- doc_salary_slip: string</div>
+    <div>- doc_marriage_cert: string</div>
+    <div>- doc_medical_report: string</div>
+    <div>- doc_pharmacy_quote: string</div>
+    <div>- doc_bank_statement: string</div>
+  </div>
+  <div class="section">
+    <div>+ user(): BelongsTo</div>
+    <div>+ charityType(): BelongsTo</div>
+    <div>+ payment(): HasOne</div>
+    <div>+ applicantMaritalStatus(): Attribute</div>
+  </div>
+</div>
+
+<!-- CharityType Model -->
+<div class="uml-class color-model" id="CharityType" style="left:1680px;top:1120px;min-width:180px;">
+  <div class="header">
+    <div class="stereotype">&laquo;model&raquo;</div>
+    CharityType
+  </div>
+  <div class="section">
+    <div>- id: int</div>
+    <div>- name: string</div>
+    <div>- description: text</div>
+    <div>- image: string</div>
+    <div>- start_date: date</div>
+    <div>- end_date: date</div>
+  </div>
+  <div class="section">
+    <div>+ applications(): HasMany</div>
+    <div>+ getStatusAttribute(): string</div>
+  </div>
+</div>
+
+<!-- Payment Model -->
+<div class="uml-class color-model" id="Payment" style="left:1680px;top:1420px;min-width:200px;">
+  <div class="header">
+    <div class="stereotype">&laquo;model&raquo;</div>
+    Payment
+  </div>
+  <div class="section">
+    <div>- id: int</div>
+    <div>- application_id: int (FK)</div>
+    <div>- amount: decimal</div>
+    <div>- transaction_id: string</div>
+    <div>- status: string</div>
+    <div>- payment_gateway: string</div>
+    <div>- payment_method: string</div>
+    <div>- gateway_reference: string</div>
+    <div>- notes: text</div>
+  </div>
+  <div class="section">
+    <div>+ application(): BelongsTo</div>
+    <div>+ getGatewayDisplayNameAttribute(): string</div>
+    <div>+ getGatewayBadgeClassAttribute(): string</div>
+  </div>
+</div>
+
+
+<!-- ======================= CONTROLLERS (Top Area) ======================= -->
+
+<!-- Admin\DashboardController -->
+<div class="uml-class color-controller" id="AdminDashboardCtrl" style="left:60px;top:80px;min-width:180px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    Admin\DashboardController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ index(Request): View</div>
+  </div>
+</div>
+
+<!-- Admin\AccountController -->
+<div class="uml-class color-controller" id="AdminAccountCtrl" style="left:300px;top:80px;min-width:200px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    Admin\AccountController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ index(): View</div>
+    <div>+ create(): View</div>
+    <div>+ store(Request): Redirect</div>
+    <div>+ show(User): View</div>
+    <div>+ edit(User): View</div>
+    <div>+ update(Request, User): Redirect</div>
+    <div>+ destroy(User): Redirect</div>
+  </div>
+</div>
+
+<!-- Admin\ApplicationController -->
+<div class="uml-class color-controller" id="AdminAppCtrl" style="left:580px;top:80px;min-width:230px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    Admin\ApplicationController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ index(Request): View</div>
+    <div>+ show(Application): View</div>
+    <div>+ edit(Application): View</div>
+    <div>+ update(Request, Application): Redirect</div>
+  </div>
+</div>
+
+<!-- Admin\CharityTypeController -->
+<div class="uml-class color-controller" id="AdminCharityCtrl" style="left:900px;top:80px;min-width:230px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    Admin\CharityTypeController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ index(): View</div>
+    <div>+ create(): View</div>
+    <div>+ store(Request): Redirect</div>
+    <div>+ show(CharityType): View</div>
+    <div>+ edit(CharityType): View</div>
+    <div>+ update(Request, CharityType): Redirect</div>
+    <div>+ destroy(CharityType): Redirect</div>
+  </div>
+</div>
+
+<!-- Admin\PaymentController -->
+<div class="uml-class color-controller" id="AdminPayCtrl" style="left:1200px;top:80px;min-width:250px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    Admin\PaymentController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ index(): View</div>
+    <div>+ create(Request): View</div>
+    <div>+ store(Request, PaymentGatewayService): Redirect</div>
+  </div>
+</div>
+
+<!-- ProfileController -->
+<div class="uml-class color-controller" id="ProfileCtrl" style="left:1520px;top:80px;min-width:250px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    ProfileController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ edit(Request): View</div>
+    <div>+ update(ProfileUpdateRequest): Redirect</div>
+    <div>+ destroy(Request): Redirect</div>
+    <div>+ updateAvatar(Request): Redirect</div>
+    <div>+ destroyAvatar(Request): Redirect</div>
+  </div>
+</div>
+
+<!-- ======================= APPLICANT CONTROLLERS (Top Right) ======================= -->
+
+<!-- Applicant\DashboardController -->
+<div class="uml-class color-controller" id="AppDashCtrl" style="left:60px;top:380px;min-width:200px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    Applicant\DashboardController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ index(): View</div>
+  </div>
+</div>
+
+<!-- Applicant\ApplicationController -->
+<div class="uml-class color-controller" id="AppAppCtrl" style="left:330px;top:380px;min-width:260px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    Applicant\ApplicationController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ index(): View</div>
+    <div>+ create(Request): View</div>
+    <div>+ store(Request): Redirect</div>
+    <div>+ show(Application): View</div>
+    <div>+ edit(Application): View</div>
+    <div>+ update(Request, Application): Redirect</div>
+    <div>+ destroy(Application): Redirect</div>
+    <div>- validateApplication(Request): array</div>
+    <div>- handleFileUploads(Request, array): void</div>
+  </div>
+</div>
+
+<!-- Applicant\NotificationController -->
+<div class="uml-class color-controller" id="NotifCtrl" style="left:660px;top:380px;min-width:250px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    Applicant\NotificationController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ index(Request): View</div>
+    <div>+ getUnreadCount(Request): JsonResponse</div>
+    <div>+ markAsRead(Request, id): Redirect</div>
+    <div>+ markAllAsRead(Request): Redirect</div>
+  </div>
+</div>
+
+<!-- ======================= AUTH CONTROLLERS (Top Far Right) ======================= -->
+
+<!-- AuthenticatedSessionController -->
+<div class="uml-class color-controller" id="AuthSessionCtrl" style="left:1860px;top:80px;min-width:250px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    AuthenticatedSessionController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ create(): View</div>
+    <div>+ store(LoginRequest): Redirect</div>
+    <div>+ destroy(Request): Redirect</div>
+  </div>
+</div>
+
+<!-- RegisteredUserController -->
+<div class="uml-class color-controller" id="RegisterCtrl" style="left:2180px;top:80px;min-width:250px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    RegisteredUserController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ create(): View</div>
+    <div>+ store(Request): Redirect</div>
+  </div>
+</div>
+
+<!-- PasswordResetLinkController -->
+<div class="uml-class color-controller" id="PwResetCtrl" style="left:2500px;top:80px;min-width:260px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    PasswordResetLinkController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ create(): View</div>
+    <div>+ store(Request): Redirect</div>
+    <div>+ showVerifyCodeForm(): View|Redirect</div>
+    <div>+ verifyCode(Request): Redirect</div>
+  </div>
+</div>
+
+<!-- NewPasswordController -->
+<div class="uml-class color-controller" id="NewPwCtrl" style="left:2830px;top:80px;min-width:240px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    NewPasswordController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ create(Request): View|Redirect</div>
+    <div>+ store(Request): Redirect</div>
+  </div>
+</div>
+
+<!-- ConfirmablePasswordController -->
+<div class="uml-class color-controller" id="ConfirmPwCtrl" style="left:1860px;top:280px;min-width:240px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    ConfirmablePasswordController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ show(): View</div>
+    <div>+ store(Request): Redirect</div>
+  </div>
+</div>
+
+<!-- PasswordController -->
+<div class="uml-class color-controller" id="PwCtrl" style="left:2180px;top:280px;min-width:200px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    PasswordController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ update(Request): Redirect</div>
+  </div>
+</div>
+
+<!-- EmailVerificationPromptController -->
+<div class="uml-class color-controller" id="EmailVerifyCtrl" style="left:2450px;top:280px;min-width:260px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    EmailVerificationPromptController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ __invoke(Request): View|Redirect</div>
+  </div>
+</div>
+
+<!-- VerifyEmailController -->
+<div class="uml-class color-controller" id="VerifyEmailCtrl" style="left:2780px;top:280px;min-width:260px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    VerifyEmailController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ __invoke(EmailVerificationRequest): Redirect</div>
+  </div>
+</div>
+
+<!-- EmailVerificationNotificationController -->
+<div class="uml-class color-controller" id="EmailNotifCtrl" style="left:2450px;top:430px;min-width:300px;">
+  <div class="header">
+    <div class="stereotype">&laquo;controller&raquo;</div>
+    EmailVerificationNotificationController
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ store(Request): Redirect</div>
+  </div>
+</div>
+
+
+<!-- ======================= MIDDLEWARE ======================= -->
+
+<div class="uml-class color-middleware" id="RoleMiddleware" style="left:1000px;top:380px;min-width:200px;">
+  <div class="header">
+    <div class="stereotype">&laquo;middleware&raquo;</div>
+    RoleMiddleware
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ handle(Request, Closure, role): Response</div>
+  </div>
+</div>
+
+
+<!-- ======================= SERVICE ======================= -->
+
+<div class="uml-class color-service" id="PaymentGatewayService" style="left:1350px;top:380px;min-width:280px;">
+  <div class="header">
+    <div class="stereotype">&laquo;service&raquo;</div>
+    PaymentGatewayService
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ getAvailableGateways(): array</div>
+    <div>+ processPayment(amount, gateway, method, details): array</div>
+    <div>+ validateGateway(gateway, method): bool</div>
+  </div>
+</div>
+
+
+<!-- ======================= MAIL ======================= -->
+
+<div class="uml-class color-mail" id="OTPMail" style="left:2600px;top:580px;min-width:220px;">
+  <div class="header">
+    <div class="stereotype">&laquo;mail&raquo;</div>
+    OTPMail
+  </div>
+  <div class="section">
+    <div>+ code: string</div>
+  </div>
+  <div class="section">
+    <div>+ __construct(code): void</div>
+    <div>+ envelope(): Envelope</div>
+    <div>+ content(): Content</div>
+    <div>+ attachments(): array</div>
+  </div>
+</div>
+
+
+<!-- ======================= NOTIFICATION ======================= -->
+
+<div class="uml-class color-notification" id="AppApprovedNotif" style="left:2100px;top:580px;min-width:280px;">
+  <div class="header">
+    <div class="stereotype">&laquo;notification&raquo;</div>
+    ApplicationApprovedNotification
+  </div>
+  <div class="section">
+    <div># application: Application</div>
+  </div>
+  <div class="section">
+    <div>+ __construct(Application): void</div>
+    <div>+ via(notifiable): array</div>
+    <div>+ toArray(notifiable): array</div>
+  </div>
+</div>
+
+
+<!-- ======================= FORM REQUESTS ======================= -->
+
+<div class="uml-class color-request" id="LoginRequest" style="left:1860px;top:580px;min-width:220px;">
+  <div class="header">
+    <div class="stereotype">&laquo;formRequest&raquo;</div>
+    LoginRequest
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ authorize(): bool</div>
+    <div>+ rules(): array</div>
+    <div>+ authenticate(): void</div>
+    <div>+ ensureIsNotRateLimited(): void</div>
+    <div>+ throttleKey(): string</div>
+  </div>
+</div>
+
+<div class="uml-class color-request" id="ProfileUpdateReq" style="left:1520px;top:380px;min-width:220px;">
+  <div class="header">
+    <div class="stereotype">&laquo;formRequest&raquo;</div>
+    ProfileUpdateRequest
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+  <div class="section">
+    <div>+ rules(): array</div>
+  </div>
+</div>
+
+
+<!-- ======================= VIEWS (Bottom Area) ======================= -->
+
+<!-- Admin Views -->
+<div class="uml-class color-view" id="vAdminDash" style="left:60px;top:1900px;min-width:160px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.dashboard
+  </div>
+  <div class="section">
+    <div>- stats: array</div>
+    <div>- applications: Collection</div>
+    <div>- charityTypes: Collection</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminAccIdx" style="left:60px;top:2100px;min-width:150px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.accounts.index
+  </div>
+  <div class="section">
+    <div>- users: Collection</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminAccCreate" style="left:230px;top:2100px;min-width:160px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.accounts.create
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminAccEdit" style="left:410px;top:2100px;min-width:150px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.accounts.edit
+  </div>
+  <div class="section">
+    <div>- account: User</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminAppIdx" style="left:580px;top:1900px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.applications.index
+  </div>
+  <div class="section">
+    <div>- applications: Collection</div>
+    <div>- charityTypes: Collection</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminAppShow" style="left:780px;top:1900px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.applications.show
+  </div>
+  <div class="section">
+    <div>- application: Application</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminCTIdx" style="left:980px;top:1900px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.charity-types.index
+  </div>
+  <div class="section">
+    <div>- charityTypes: Collection</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminCTCreate" style="left:1180px;top:1900px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.charity-types.create
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminCTEdit" style="left:1370px;top:1900px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.charity-types.edit
+  </div>
+  <div class="section">
+    <div>- charityType: CharityType</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminCTShow" style="left:1560px;top:1900px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.charity-types.show
+  </div>
+  <div class="section">
+    <div>- charityType: CharityType</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminPayIdx" style="left:1760px;top:1900px;min-width:160px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.payments.index
+  </div>
+  <div class="section">
+    <div>- payments: Collection</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAdminPayCreate" style="left:1940px;top:1900px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    admin.payments.create
+  </div>
+  <div class="section">
+    <div>- application: Application</div>
+    <div>- gateways: array</div>
+  </div>
+</div>
+
+<!-- Applicant Views -->
+<div class="uml-class color-view" id="vAppDash" style="left:60px;top:2300px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    applicant.dashboard
+  </div>
+  <div class="section">
+    <div>- applications: Collection</div>
+    <div>- charityTypes: Collection</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAppAppIdx" style="left:280px;top:2300px;min-width:170px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    applicant.applications.index
+  </div>
+  <div class="section">
+    <div>- applications: Collection</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAppAppCreate" style="left:480px;top:2300px;min-width:190px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    applicant.applications.create
+  </div>
+  <div class="section">
+    <div>- charityTypes: Collection</div>
+    <div>- latestApplication: Application</div>
+    <div>- selectedCharityType: CharityType</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAppAppEdit" style="left:700px;top:2300px;min-width:190px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    applicant.applications.edit
+  </div>
+  <div class="section">
+    <div>- application: Application</div>
+    <div>- charityTypes: Collection</div>
+    <div>- selectedCharityType: CharityType</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAppAppShow" style="left:920px;top:2300px;min-width:180px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    applicant.applications.show
+  </div>
+  <div class="section">
+    <div>- application: Application</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vAppNotifIdx" style="left:1130px;top:2300px;min-width:180px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    applicant.notifications.index
+  </div>
+  <div class="section">
+    <div>- notifications: Paginator</div>
+  </div>
+</div>
+
+<!-- Auth Views -->
+<div class="uml-class color-view" id="vLogin" style="left:1860px;top:2100px;min-width:140px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    auth.login
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vRegister" style="left:2020px;top:2100px;min-width:140px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    auth.register
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vForgotPw" style="left:2180px;top:2100px;min-width:160px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    auth.forgot-password
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vVerifyCode" style="left:2360px;top:2100px;min-width:140px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    auth.verify-code
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vResetPw" style="left:2520px;top:2100px;min-width:150px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    auth.reset-password
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vConfirmPw" style="left:2690px;top:2100px;min-width:160px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    auth.confirm-password
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<div class="uml-class color-view" id="vVerifyEmail" style="left:2870px;top:2100px;min-width:150px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    auth.verify-email
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<!-- Profile View -->
+<div class="uml-class color-view" id="vProfileEdit" style="left:1370px;top:2300px;min-width:150px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    profile.edit
+  </div>
+  <div class="section">
+    <div>- user: User</div>
+  </div>
+</div>
+
+<!-- Welcome View -->
+<div class="uml-class color-view" id="vWelcome" style="left:1560px;top:2300px;min-width:130px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    welcome
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<!-- Dashboard redirect View -->
+<div class="uml-class color-view" id="vDashboard" style="left:1720px;top:2300px;min-width:130px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    dashboard
+  </div>
+  <div class="section">
+    <div>&nbsp;</div>
+  </div>
+</div>
+
+<!-- OTP Email View -->
+<div class="uml-class color-view" id="vOTPEmail" style="left:2600px;top:800px;min-width:140px;">
+  <div class="header">
+    <div class="stereotype">&laquo;view&raquo;</div>
+    emails.otp
+  </div>
+  <div class="section">
+    <div>- code: string</div>
+  </div>
+</div>
+
+</div><!-- end canvas -->
+
+<script>
+// Draw relationship lines
+const svg = document.getElementById('lines');
+
+function getBox(id) {
+  const el = document.getElementById(id);
+  if (!el) return null;
+  const r = el.getBoundingClientRect();
+  const canvas = document.getElementById('canvas').getBoundingClientRect();
+  return {
+    left: el.offsetLeft,
+    top: el.offsetTop,
+    width: el.offsetWidth,
+    height: el.offsetHeight,
+    cx: el.offsetLeft + el.offsetWidth/2,
+    cy: el.offsetTop + el.offsetHeight/2,
+    right: el.offsetLeft + el.offsetWidth,
+    bottom: el.offsetTop + el.offsetHeight
+  };
+}
+
+function drawLine(fromId, toId, type, label, fromSide, toSide, fromMult, toMult) {
+  const a = getBox(fromId);
+  const b = getBox(toId);
+  if (!a || !b) return;
+
+  let x1, y1, x2, y2;
+
+  // Determine connection points
+  if (fromSide === 'bottom') { x1 = a.cx; y1 = a.bottom; }
+  else if (fromSide === 'top') { x1 = a.cx; y1 = a.top; }
+  else if (fromSide === 'right') { x1 = a.right; y1 = a.cy; }
+  else if (fromSide === 'left') { x1 = a.left; y1 = a.cy; }
+  else { x1 = a.cx; y1 = a.bottom; }
+
+  if (toSide === 'top') { x2 = b.cx; y2 = b.top; }
+  else if (toSide === 'bottom') { x2 = b.cx; y2 = b.bottom; }
+  else if (toSide === 'right') { x2 = b.right; y2 = b.cy; }
+  else if (toSide === 'left') { x2 = b.left; y2 = b.cy; }
+  else { x2 = b.cx; y2 = b.top; }
+
+  let marker = '';
+  let dashArray = '';
+  let color = '#555';
+
+  if (type === 'association') { marker = 'url(#arrow)'; }
+  else if (type === 'composition') { marker = 'url(#arrow)'; }
+  else if (type === 'dependency') { marker = 'url(#arrow-open)'; dashArray = '5,3'; color = '#888'; }
+  else if (type === 'aggregation') { marker = 'url(#diamond)'; }
+
+  // Draw path with elbows
+  let path;
+  if ((fromSide === 'bottom' || fromSide === 'top') && (toSide === 'top' || toSide === 'bottom')) {
+    const midY = (y1 + y2) / 2;
+    path = `M ${x1} ${y1} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2}`;
+  } else if ((fromSide === 'left' || fromSide === 'right') && (toSide === 'left' || toSide === 'right')) {
+    const midX = (x1 + x2) / 2;
+    path = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
+  } else {
+    path = `M ${x1} ${y1} L ${x1} ${y2} L ${x2} ${y2}`;
+  }
+
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  line.setAttribute('d', path);
+  line.setAttribute('fill', 'none');
+  line.setAttribute('stroke', color);
+  line.setAttribute('stroke-width', '1.2');
+  if (marker) line.setAttribute('marker-end', marker);
+  if (dashArray) line.setAttribute('stroke-dasharray', dashArray);
+  svg.appendChild(line);
+
+  // Multiplicity labels
+  if (fromMult) {
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('x', x1 + (fromSide === 'right' ? 5 : fromSide === 'left' ? -15 : 5));
+    t.setAttribute('y', y1 + (fromSide === 'bottom' ? 14 : fromSide === 'top' ? -4 : -4));
+    t.setAttribute('font-size', '9');
+    t.setAttribute('fill', '#333');
+    t.textContent = fromMult;
+    svg.appendChild(t);
+  }
+  if (toMult) {
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('x', x2 + (toSide === 'right' ? 5 : toSide === 'left' ? -15 : 5));
+    t.setAttribute('y', y2 + (toSide === 'top' ? -4 : toSide === 'bottom' ? 14 : -4));
+    t.setAttribute('font-size', '9');
+    t.setAttribute('fill', '#333');
+    t.textContent = toMult;
+    svg.appendChild(t);
+  }
+}
+
+// ===== MODEL RELATIONSHIPS (Green) =====
+
+// User 1 --- * Application
+drawLine('User', 'Application', 'association', '', 'right', 'left', '1', '*');
+
+// Application * --- 1 CharityType
+drawLine('Application', 'CharityType', 'association', '', 'right', 'left', '*', '1');
+
+// Application 1 --- 0..1 Payment
+drawLine('Application', 'Payment', 'association', '', 'bottom', 'top', '1', '0..1');
+
+
+// ===== CONTROLLER -> MODEL DEPENDENCIES =====
+
+// Admin\DashboardController -> User
+drawLine('AdminDashboardCtrl', 'User', 'dependency', '', 'bottom', 'top', '', '');
+
+// Admin\AccountController -> User
+drawLine('AdminAccountCtrl', 'User', 'dependency', '', 'bottom', 'top', '', '');
+
+// Admin\ApplicationController -> Application
+drawLine('AdminAppCtrl', 'Application', 'dependency', '', 'bottom', 'top', '', '');
+
+// Admin\CharityTypeController -> CharityType
+drawLine('AdminCharityCtrl', 'CharityType', 'dependency', '', 'bottom', 'top', '', '');
+
+// Admin\PaymentController -> Payment
+drawLine('AdminPayCtrl', 'Payment', 'dependency', '', 'bottom', 'top', '', '');
+
+// ProfileController -> User
+drawLine('ProfileCtrl', 'User', 'dependency', '', 'bottom', 'top', '', '');
+
+// Applicant\DashboardController -> User/Application
+drawLine('AppDashCtrl', 'User', 'dependency', '', 'bottom', 'top', '', '');
+
+// Applicant\ApplicationController -> Application
+drawLine('AppAppCtrl', 'Application', 'dependency', '', 'bottom', 'top', '', '');
+
+// AuthenticatedSessionController -> User
+drawLine('AuthSessionCtrl', 'User', 'dependency', '', 'bottom', 'top', '', '');
+
+// RegisteredUserController -> User
+drawLine('RegisterCtrl', 'User', 'dependency', '', 'bottom', 'top', '', '');
+
+
+// ===== CONTROLLER -> VIEW DEPENDENCIES =====
+
+// Admin Dashboard -> admin.dashboard view
+drawLine('vAdminDash', 'AdminDashboardCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// Admin Accounts views
+drawLine('vAdminAccIdx', 'AdminAccountCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// Admin Applications views
+drawLine('vAdminAppIdx', 'AdminAppCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// Admin CharityType views
+drawLine('vAdminCTIdx', 'AdminCharityCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// Admin Payments views
+drawLine('vAdminPayIdx', 'AdminPayCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// Applicant views
+drawLine('vAppDash', 'AppDashCtrl', 'dependency', '', 'top', 'bottom', '', '');
+drawLine('vAppAppIdx', 'AppAppCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// Notification views
+drawLine('vAppNotifIdx', 'NotifCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// Auth views
+drawLine('vLogin', 'AuthSessionCtrl', 'dependency', '', 'top', 'bottom', '', '');
+drawLine('vRegister', 'RegisterCtrl', 'dependency', '', 'top', 'bottom', '', '');
+drawLine('vForgotPw', 'PwResetCtrl', 'dependency', '', 'top', 'bottom', '', '');
+drawLine('vResetPw', 'NewPwCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// Profile view
+drawLine('vProfileEdit', 'ProfileCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+// ===== CONTROLLER -> SERVICE =====
+drawLine('AdminPayCtrl', 'PaymentGatewayService', 'dependency', '', 'bottom', 'top', '', '');
+
+// ===== CONTROLLER -> FORM REQUEST =====
+drawLine('AuthSessionCtrl', 'LoginRequest', 'dependency', '', 'bottom', 'top', '', '');
+drawLine('ProfileCtrl', 'ProfileUpdateReq', 'dependency', '', 'bottom', 'top', '', '');
+
+// ===== CONTROLLER -> NOTIFICATION =====
+drawLine('AdminAppCtrl', 'AppApprovedNotif', 'dependency', '', 'bottom', 'top', '', '');
+
+// ===== CONTROLLER -> MAIL =====
+drawLine('PwResetCtrl', 'OTPMail', 'dependency', '', 'bottom', 'top', '', '');
+
+// ===== MAIL -> VIEW =====
+drawLine('OTPMail', 'vOTPEmail', 'dependency', '', 'bottom', 'top', '', '');
+
+// ===== MIDDLEWARE =====
+drawLine('RoleMiddleware', 'AdminDashboardCtrl', 'dependency', '', 'top', 'bottom', '', '');
+
+</script>
+
+</body>
+</html>

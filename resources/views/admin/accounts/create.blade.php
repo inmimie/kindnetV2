@@ -25,10 +25,8 @@
                         </div>
                         <div class="mb-4">
                             <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Role</label>
-                            <select name="role" class="mt-1 block w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
-                                <option value="applicant">Applicant</option>
-                                <option value="admin">Admin</option>
-                            </select>
+                            <input type="text" value="Admin" class="mt-1 block w-full rounded-md shadow-sm border-gray-300 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed" disabled>
+                            <input type="hidden" name="role" value="admin">
                         </div>
                         <div class="mb-4">
                             <label class="block font-medium text-sm text-gray-700 dark:text-gray-300">Password</label>

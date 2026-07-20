@@ -10,9 +10,23 @@ use Illuminate\Validation\Rule;
 
 class AccountController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->get();
+        $query = User::latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        $users = $query->paginate(15)->withQueryString();
         return view('admin.accounts.index', compact('users'));
     }
 
@@ -28,7 +42,7 @@ class AccountController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'phone_number' => 'nullable|string|max:20',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,applicant',
+            'role' => 'required|in:admin',
         ]);
 
         User::create([
