@@ -30,4 +30,4 @@ COPY --from=node-builder --chown=www-data:www-data /app/public/build ./public/bu
 RUN composer dump-autoload --no-dev --optimize
 
 # Configure environment variables for runtime automations (such as migrations)
-ENV AUTORUN_ENABLED=false
+ENV AUTORUN_ENABLED=true
