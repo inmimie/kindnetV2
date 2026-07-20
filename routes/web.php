@@ -53,3 +53,24 @@ Route::middleware(['auth', 'verified', 'role:applicant'])->prefix('applicant')->
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/debug-img', function () {
+    $file = public_path('storage/charity_types/9IWHQUQMWBR1wIsUOjJqS5W7ptzKiSoNIsFLfB2t.jpg');
+    $out = "File Path: " . $file . "<br>";
+    $out .= "Exists: " . (file_exists($file) ? 'YES' : 'NO') . "<br>";
+    if (file_exists($file)) {
+        $out .= "Readable: " . (is_readable($file) ? 'YES' : 'NO') . "<br>";
+        $out .= "Permissions: " . substr(sprintf('%o', fileperms($file)), -4) . "<br>";
+        $out .= "Owner UID: " . fileowner($file) . "<br>";
+    }
+    
+    // Check if the symlink itself is broken
+    $symlink = public_path('storage');
+    $out .= "Symlink Path: " . $symlink . "<br>";
+    $out .= "Symlink Exists: " . (file_exists($symlink) ? 'YES' : 'NO') . "<br>";
+    $out .= "Is Link: " . (is_link($symlink) ? 'YES' : 'NO') . "<br>";
+    if (is_link($symlink)) {
+        $out .= "Link Target: " . readlink($symlink) . "<br>";
+    }
+    return $out;
+});
