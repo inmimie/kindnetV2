@@ -17,6 +17,5 @@ storage/logs/*.log
 bootstrap/cache/*.php
 npm-debug.log
 yarn-error.log
-package-lock.json
 tests
 README.md
